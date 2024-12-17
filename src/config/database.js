@@ -1,4 +1,5 @@
 const { Sequelize } = require('sequelize');
+const pg = require('pg')
 require('dotenv').config();
 
 // Decode base64 CA_PEM
@@ -14,6 +15,7 @@ const sequelize = new Sequelize({
   host: process.env.DB_HOST,
   port: Number(process.env.DB_PORT),
   dialect: 'postgres',
+  dialectModule: pg,
   dialectOptions: {
     ssl: {
       require: true,
