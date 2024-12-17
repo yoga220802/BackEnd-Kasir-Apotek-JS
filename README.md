@@ -23,7 +23,7 @@ Backend ini adalah bagian dari sistem kasir apotek yang bertanggung jawab untuk 
 
 ### Endpoint Login
 
-#### URL: [https://back-end-kasir-apotek.vercel.app/](https://back-end-kasir-apotek.vercel.app/)
+#### URL: [https://back-end-kasir-apotek-js.vercel.app/](https://back-end-kasir-apotek-js.vercel.app/)
 ```
 POST /auth/login
 ```
