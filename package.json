@@ -5,8 +5,8 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "vercel-build": "npm install"
+    "build": "npm install",
+    "vercel-build": "echo 'Build step completed'"
   },
   "repository": {
     "type": "git",
