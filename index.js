@@ -17,8 +17,7 @@ app.get('/', (req, res) => {
   res.status(200).json({ message: 'API is working fine!' });
 });
 
-// Start server
-const PORT = process.env.PORT || 3000;
+// Database connection and server start
 (async () => {
   try {
     await sequelize.authenticate();
@@ -26,11 +25,11 @@ const PORT = process.env.PORT || 3000;
 
     await sequelize.sync({ force: false });
     console.log('Models synced successfully.');
-
-    app.listen(PORT, () => {
-      console.log(`Server running at http://localhost:${PORT}`);
-    });
   } catch (err) {
-    console.error('Failed to start server:', err);
+    console.error('Failed to connect to the database:', err);
   }
 })();
+
+// Export the Express app
+module.exports = app;
+
