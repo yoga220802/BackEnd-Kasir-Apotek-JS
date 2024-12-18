@@ -17,18 +17,14 @@ exports.login = async (req, res) => {
     }
 
     const token = jwt.sign(
-      { userid: user.userid, roleid: user.roleid },
+      { userid: user.userid, fullname: user.fullname, roleid: user.roleid},
       process.env.JWT_SECRET,
-      { expiresIn: '1h' }
+      { expiresIn: '7d' }
     );
 
     res.json({
       message: 'Login berhasil',
       token,
-      user: {
-        fullName: user.fullname,
-        roleID: user.roleid,
-      },
     });
   } catch (error) {
     console.error('Error saat login:', error);
