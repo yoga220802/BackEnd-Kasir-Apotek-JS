@@ -1,6 +1,7 @@
 const express = require('express');
 const authRoutes = require('./authRoutes');
 const userRoutes = require('./userRoutes');
+const docsRoutes = require('./docsRoutes')
 
 const router = express.Router();
 
@@ -8,6 +9,9 @@ const router = express.Router();
 router.get('/', (req, res) => {
   res.status(200).json({ message: 'API is working fine!' });
 });
+
+// docs routes
+router.use('/', docsRoutes);
 
 // Authentication routes
 router.use('/auth', authRoutes);
