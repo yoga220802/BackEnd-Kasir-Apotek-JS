@@ -1,5 +1,6 @@
 const express = require('express');
 const authRoutes = require('./authRoutes');
+const userRoutes = require('./userRoutes');
 
 const router = express.Router();
 
@@ -10,6 +11,9 @@ router.get('/', (req, res) => {
 
 // Authentication routes
 router.use('/auth', authRoutes);
+
+// user manager routes
+router.use('/user', userRoutes);
 
 // Export the combined routes
 module.exports = router;
