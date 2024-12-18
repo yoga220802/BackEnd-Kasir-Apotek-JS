@@ -6,7 +6,9 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "build": "npm install",
-    "vercel-build": "echo 'Build step completed'"
+    "vercel-build": "echo 'Build step completed'",
+    "predeploy": "sh ./predeploy.sh",
+    "deploy": "vercel --prod"
   },
   "repository": {
     "type": "git",
