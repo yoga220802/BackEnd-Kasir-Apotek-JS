@@ -1,19 +1,19 @@
-const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const User = require('../models/user')
+const bcrypt = require('bcrypt');
+const User = require('../models/user');
 
-const login = async (req, res) => {
+exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
     const user = await User.findOne({ where: { email } });
     if (!user) {
-      return res.status(401).json({ message: 'Invalid email or password' });
+      return res.status(401).json({ message: 'Email atau password salah' });
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.pass);
     if (!isPasswordValid) {
-      return res.status(401).json({ message: 'Invalid email or password' });
+      return res.status(401).json({ message: 'Email atau password salah' });
     }
 
     const token = jwt.sign(
@@ -23,17 +23,15 @@ const login = async (req, res) => {
     );
 
     res.json({
-      message: 'Login successful',
+      message: 'Login berhasil',
       token,
       user: {
         fullName: user.fullname,
         roleID: user.roleid,
       },
     });
-  } catch (err) {
-    console.error('Login error:', err);
-    res.status(500).json({ message: 'Server error' });
+  } catch (error) {
+    console.error('Error saat login:', error);
+    res.status(500).json({ message: 'Terjadi kesalahan pada server' });
   }
 };
-
-module.exports = { login };
