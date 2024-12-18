@@ -11,5 +11,10 @@
         "src": "/(.*)",
         "dest": "index.js"
       }
-    ]
+    ],
+      "github": {
+        "enabled": true,
+        "autoJobCancelation": true,
+        "productionBranch": "main"
+      }
   }  
