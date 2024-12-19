@@ -1,4 +1,7 @@
 const express = require('express');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('../docs/openAPI.json');
+
 const authRoutes = require('./authRoutes');
 const userRoutes = require('./userRoutes');
 const docsRoutes = require('./docsRoutes')
@@ -11,7 +14,8 @@ router.get('/', (req, res) => {
 });
 
 // docs routes
-router.use('/', docsRoutes);
+// router.use('/', docsRoutes);
+router.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Authentication routes
 router.use('/auth', authRoutes);
