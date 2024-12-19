@@ -28,3 +28,16 @@ exports.authorizeRole = (requiredRole) => {
     next();
   };
 };
+
+exports.preventSelfDeletion = (req, res, next) => {
+  const { userid } = req.params; // ID user yang akan dihapus
+  const activeUserid = req.user.userid; // ID user yang sedang login (dari token JWT)
+
+  if (userid === activeUserid) {
+    return res.status(403).json({
+      message: 'Anda tidak dapat menghapus akun Anda sendiri.',
+    });
+  }
+
+  next(); // Lanjutkan ke handler berikutnya jika validasi lolos
+};
