@@ -1,8 +1,8 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "title": "User Management API",
-    "description": "API untuk mengelola pengguna dalam sistem, termasuk operasi CRUD.",
+    "title": "API Kasir Apotek",
+    "description": "Dokumentasi API untuk sistem kasir apotek",
     "version": "1.0.0"
   },
   "servers": [
