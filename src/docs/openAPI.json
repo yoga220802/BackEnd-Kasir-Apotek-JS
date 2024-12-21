@@ -15,7 +15,33 @@
       "description": "Server produksi"
     }
   ],
-  "paths": {
+    "paths": {
+      "/docs": {
+      "get": {
+        "summary": "Akses dokumentasi untuk semua endpoint",
+        "tags": [
+          "Documentation"
+        ],
+        "responses": {
+          "200": {
+            "description": "Dokumentasi berhasil diakses",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Dokumentasi berhasil diakses"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/auth/login": {
       "post": {
         "summary": "Authenticate a user and return a JWT token",
@@ -87,32 +113,6 @@
         }
       }
     },
-    "/docs": {
-      "get": {
-        "summary": "Akses dokumentasi untuk semua endpoint",
-        "tags": [
-          "Documentation"
-        ],
-        "responses": {
-          "200": {
-            "description": "Dokumentasi berhasil diakses",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "Dokumentasi berhasil diakses"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/user": {
       "get": {
         "summary": "Mendapatkan daftar semua user",
@@ -141,46 +141,98 @@
         }
       }
     },
-    "/user/add": {
-      "post": {
-        "summary": "Menambahkan user baru",
+    "/user/{userid}": {
+      "get": {
+        "summary": "Mengambil data user berdasarkan ID",
         "tags": [
           "User Management"
+        ],
+        "parameters": [
+          {
+            "name": "userid",
+            "in": "path",
+            "required": true,
+            "description": "ID user yang ingin diambil datanya",
+            "schema": {
+              "type": "string"
+            }
+          }
         ],
         "security": [
           {
             "BearerAuth": []
           }
         ],
-        "requestBody": {
-          "description": "Data user baru",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserInput"
-              }
-            }
-          }
-        },
         "responses": {
-          "201": {
-            "description": "User berhasil ditambahkan",
+          "200": {
+            "description": "Data user berhasil diambil",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/User"
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "User retrieved successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/User"
+                    }
+                  }
                 }
               }
             }
           },
           "400": {
-            "description": "Data input tidak valid"
+            "description": "User ID tidak diberikan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "User ID is required"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "User not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Kesalahan server",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
-      }
-    },
-    "/user/{userid}": {
+      },
       "patch": {
         "summary": "Mengedit user berdasarkan ID",
         "tags": [
@@ -226,6 +278,45 @@
           },
           "404": {
             "description": "User tidak ditemukan"
+          }
+        }
+      }
+    },
+    "/user/add": {
+      "post": {
+        "summary": "Menambahkan user baru",
+        "tags": [
+          "User Management"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Data user baru",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User berhasil ditambahkan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Data input tidak valid"
           }
         }
       }
