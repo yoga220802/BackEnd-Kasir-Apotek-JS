@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
-const User = require('../../models/user');
-const Role = require('../../models/role');
+const User = require('../../models/users/user');
+const Role = require('../../models/users/role');
 
 // Edit user
 exports.editUser = async (req, res) => {
