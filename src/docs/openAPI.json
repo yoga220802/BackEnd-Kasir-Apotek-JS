@@ -352,6 +352,425 @@
           }
         }
       }
+    },
+    "/medicine": {
+      "get": {
+        "summary": "Retrieve a list of medicines",
+        "tags": [
+          "Medicine"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of medicines retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Medicine"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/medicine/{medicineid}": {
+      "get": {
+        "summary": "Retrieve a single medicine by ID",
+        "tags": [
+          "Medicine"
+        ],
+        "parameters": [
+          {
+            "name": "medicineid",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the medicine to retrieve",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Medicine retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Medicine"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Medicine not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/medicine/batch": {
+      "get": {
+        "summary": "Retrieve a list of medicine batches",
+        "tags": [
+          "Medicine"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of batches retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Batch"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/medicine/batch/{batchid}": {
+      "get": {
+        "summary": "Retrieve batch details by batch ID",
+        "tags": [
+          "Medicine"
+        ],
+        "parameters": [
+          {
+            "name": "batchid",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the batch to retrieve",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Batch details retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BatchDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Batch not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/medicine/category": {
+      "get": {
+        "summary": "Retrieve a list of medicine categories",
+        "tags": [
+          "Medicine"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of categories retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Category"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No categories found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/medicine/category/{categoryid}": {
+      "get": {
+        "summary": "Retrieve medicines by category ID",
+        "tags": [
+          "Medicine"
+        ],
+        "parameters": [
+          {
+            "name": "categoryid",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the category to retrieve medicines for",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Medicines retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Category not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/medicine/add": {
+      "post": {
+        "summary": "Add new medicine(s)",
+        "tags": [
+          "Medicine"
+        ],
+        "requestBody": {
+          "description": "Data for new medicine(s). If `stock` and `expirationdate` are provided, the system will automatically process restocking. The request body supports both a single object and an array of objects.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/MedicineInput"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/MedicineInput"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Medicine(s) added successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "successes": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/medicine/restock": {
+      "post": {
+        "summary": "Restock medicine(s)",
+        "tags": [
+          "Medicine"
+        ],
+        "requestBody": {
+          "description": "Data for restocking medicine(s). The request body supports both a single object and an array of objects.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/RestockInput"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/RestockInput"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Restock process completed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "successfulRestocks": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "medicineid": {
+                            "type": "string"
+                          },
+                          "medicinename": {
+                            "type": "string"
+                          },
+                          "amount": {
+                            "type": "number"
+                          },
+                          "expirationdate": {
+                            "type": "string",
+                            "format": "date"
+                          }
+                        }
+                      }
+                    },
+                    "failedRestocks": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "medicineid": {
+                            "type": "string"
+                          },
+                          "medicinename": {
+                            "type": "string"
+                          },
+                          "reason": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/medicine/category/add": {
+      "post": {
+        "summary": "Add new category(ies)",
+        "tags": [
+          "Medicine"
+        ],
+        "requestBody": {
+          "description": "Data for new category(ies). The request body supports both a single object and an array of objects.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/CategoryInput"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/CategoryInput"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Category(ies) added successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "successes": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -401,6 +820,171 @@
           }
         }
       },
+      "Medicine": {
+        "type": "object",
+        "properties": {
+          "medicineID": {
+            "type": "string"
+          },
+          "medicineName": {
+            "type": "string"
+          },
+          "brand": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          },
+          "stock": {
+            "type": "number"
+          },
+          "unit": {
+            "type": "string"
+          },
+          "createdat": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedat": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "batches": {
+            "type": "array",
+            "items": {
+              "properties": {
+                "batchid": {
+                  "type": "string"
+                },
+                "expirationdate": {
+                  "type": "string",
+                  "format": "date"
+                }
+              }
+            }
+          },
+          "categories": {
+            "type": "array",
+            "items": {
+              "properties": {
+                "categoryID": {
+                  "type": "string"
+                },
+                "categoryName": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "Batch": {
+        "type": "object",
+        "properties": {
+          "batchid": {
+            "type": "string"
+          },
+          "entryat": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      },
+      "BatchDetails": {
+        "type": "object",
+        "properties": {
+          "batchid": {
+            "type": "string"
+          },
+          "entryat": {
+            "type": "string",
+            "format": "date"
+          },
+          "medicines": {
+            "type": "array",
+            "items": {
+              "properties": {
+                "medicineID": {
+                  "type": "string"
+                },
+                "expirationdate": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "medicineName": {
+                  "type": "string"
+                },
+                "brand": {
+                  "type": "string"
+                },
+                "price": {
+                  "type": "number"
+                },
+                "totalStock": {
+                  "type": "number"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "categories": {
+                  "type": "array",
+                  "items": {
+                    "properties": {
+                      "categoryID": {
+                        "type": "string"
+                      },
+                      "categoryName": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "Category": {
+        "type": "object",
+        "properties": {
+          "categoryID": {
+            "type": "string"
+          },
+          "categoryName": {
+            "type": "string"
+          },
+          "categoryDescription": {
+            "type": "string"
+          }
+        }
+      },
+      "CategoryDetails": {
+        "type": "object",
+        "properties": {
+          "categoryID": {
+            "type": "string"
+          },
+          "categoryName": {
+            "type": "string"
+          },
+          "categoryDescription": {
+            "type": "string"
+          },
+          "medicines": {
+            "type": "array",
+            "items": {
+              "properties": {
+                "medicineID": {
+                  "type": "string"
+                },
+                "medicineName": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
       "UserInput": {
         "type": "object",
         "properties": {
@@ -417,6 +1001,81 @@
             "type": "string"
           },
           "roleid": {
+            "type": "string"
+          }
+        }
+      },
+      "MedicineInput": {
+        "type": "object",
+        "properties": {
+          "medicinename": {
+            "type": "string"
+          },
+          "brand": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          },
+          "stock": {
+            "type": "number"
+          },
+          "unit": {
+            "type": "string"
+          },
+          "createdat": {
+            "type": "string",
+            "format": "date"
+          },
+          "updatedat": {
+            "type": "string",
+            "format": "date"
+          },
+          "expirationdate": {
+            "type": "string",
+            "format": "date"
+          },
+          "categories": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "categoryid": {
+                  "type": "string"
+                },
+                "categoryname": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "RestockInput": {
+        "type": "object",
+        "properties": {
+          "medicineid": {
+            "type": "string"
+          },
+          "medicinename": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "number"
+          },
+          "expirationdate": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      },
+      "CategoryInput": {
+        "type": "object",
+        "properties": {
+          "categoryname": {
+            "type": "string"
+          },
+          "categorydescription": {
             "type": "string"
           }
         }

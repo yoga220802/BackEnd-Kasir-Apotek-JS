@@ -1,5 +1,5 @@
-const User = require('../../models/user');
-const Role = require('../../models/role');
+const User = require('../../models/users/user');
+const Role = require('../../models/users/role');
 
 // Delete user
 exports.deleteUser = async (req, res) => {
