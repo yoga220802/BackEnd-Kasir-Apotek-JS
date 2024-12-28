@@ -16,13 +16,16 @@ MedicineBatch.belongsTo(MedicineData, {
 });
 
 // Hubungan antara MedicineData dan Categories melalui MedicineCategory
-MedicineData.belongsToMany(Categories, {
- through: MedicineCategory,
- foreignKey: "medicineid",
-});
 Categories.belongsToMany(MedicineData, {
  through: MedicineCategory,
  foreignKey: "categoryid",
+ as: "Medicines", // Alias khusus
+});
+
+MedicineData.belongsToMany(Categories, {
+ through: MedicineCategory,
+ foreignKey: "medicineid",
+ as: "Categories", // Alias khusus
 });
 
 // Hubungan tambahan untuk MedicineCategory
