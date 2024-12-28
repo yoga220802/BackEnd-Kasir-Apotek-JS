@@ -574,6 +574,203 @@
           }
         }
       }
+    },
+    "/medicine/add": {
+      "post": {
+        "summary": "Add new medicine(s)",
+        "tags": [
+          "Medicine"
+        ],
+        "requestBody": {
+          "description": "Data for new medicine(s). If `stock` and `expirationdate` are provided, the system will automatically process restocking. The request body supports both a single object and an array of objects.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/MedicineInput"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/MedicineInput"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Medicine(s) added successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "successes": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/medicine/restock": {
+      "post": {
+        "summary": "Restock medicine(s)",
+        "tags": [
+          "Medicine"
+        ],
+        "requestBody": {
+          "description": "Data for restocking medicine(s). The request body supports both a single object and an array of objects.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/RestockInput"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/RestockInput"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Restock process completed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "successfulRestocks": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "medicineid": {
+                            "type": "string"
+                          },
+                          "medicinename": {
+                            "type": "string"
+                          },
+                          "amount": {
+                            "type": "number"
+                          },
+                          "expirationdate": {
+                            "type": "string",
+                            "format": "date"
+                          }
+                        }
+                      }
+                    },
+                    "failedRestocks": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "medicineid": {
+                            "type": "string"
+                          },
+                          "medicinename": {
+                            "type": "string"
+                          },
+                          "reason": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/medicine/category/add": {
+      "post": {
+        "summary": "Add new category(ies)",
+        "tags": [
+          "Medicine"
+        ],
+        "requestBody": {
+          "description": "Data for new category(ies). The request body supports both a single object and an array of objects.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/CategoryInput"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/CategoryInput"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Category(ies) added successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "successes": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -804,6 +1001,81 @@
             "type": "string"
           },
           "roleid": {
+            "type": "string"
+          }
+        }
+      },
+      "MedicineInput": {
+        "type": "object",
+        "properties": {
+          "medicinename": {
+            "type": "string"
+          },
+          "brand": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          },
+          "stock": {
+            "type": "number"
+          },
+          "unit": {
+            "type": "string"
+          },
+          "createdat": {
+            "type": "string",
+            "format": "date"
+          },
+          "updatedat": {
+            "type": "string",
+            "format": "date"
+          },
+          "expirationdate": {
+            "type": "string",
+            "format": "date"
+          },
+          "categories": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "categoryid": {
+                  "type": "string"
+                },
+                "categoryname": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "RestockInput": {
+        "type": "object",
+        "properties": {
+          "medicineid": {
+            "type": "string"
+          },
+          "medicinename": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "number"
+          },
+          "expirationdate": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      },
+      "CategoryInput": {
+        "type": "object",
+        "properties": {
+          "categoryname": {
+            "type": "string"
+          },
+          "categorydescription": {
             "type": "string"
           }
         }
