@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('../docs/openAPI.json');
 
@@ -9,7 +10,7 @@ const router = express.Router();
 
 // Test route
 router.get('/', (req, res) => {
-  res.status(200).json({ message: 'API is working fine!' });
+  res.sendFile(path.join(__dirname, '../landing/index.html'));
 });
 
 // docs routes
