@@ -11,17 +11,17 @@ const { verifyToken, authorizeRole } = require('../middlewares/authMiddleware');
 const router = express.Router();
 
 
-router.get('/', verifyToken, authorizeRole('WRH'), getMedicines);
-router.get('/batch', verifyToken, authorizeRole('WRH'), getMedicineBatches);
-router.get('/category', verifyToken, authorizeRole('WRH'), getMedicineCategories);
+router.get('/', verifyToken, authorizeRole('WRH', 'ADM'), getMedicines);
+router.get('/batch', verifyToken, authorizeRole('WRH', 'ADM'), getMedicineBatches);
+router.get('/category', verifyToken, authorizeRole('WRH', 'ADM'), getMedicineCategories);
 
-router.post('/add', verifyToken, authorizeRole('WRH'), addMedicine);
-router.post('/restock', verifyToken, authorizeRole('WRH'), restockMedicine);
-router.post('/category/add', verifyToken, authorizeRole('WRH'), addCategory);
+router.post('/add', verifyToken, authorizeRole('WRH', 'ADM'), addMedicine);
+router.post('/restock', verifyToken, authorizeRole('WRH', 'ADM'), restockMedicine);
+router.post('/category/add', verifyToken, authorizeRole('WRH', 'ADM'), addCategory);
 
-router.get('/category/:categoryid', verifyToken, authorizeRole('WRH'), getMedicinesByCategoryId);
-router.get('/batch/:batchid', verifyToken, authorizeRole('WRH'), getMedicineBatchById);
-router.get('/:medicineid', verifyToken, authorizeRole('WRH'), getMedicineById);
+router.get('/category/:categoryid', verifyToken, authorizeRole('WRH', 'ADM'), getMedicinesByCategoryId);
+router.get('/batch/:batchid', verifyToken, authorizeRole('WRH', 'ADM'), getMedicineBatchById);
+router.get('/:medicineid', verifyToken, authorizeRole('WRH', 'ADM'), getMedicineById);
 
 
 
