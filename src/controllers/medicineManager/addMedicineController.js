@@ -40,16 +40,16 @@ exports.addMedicine = async (req, res) => {
       successes.push(`Medicine "${medicinename}" added successfully.`);
 
       if (categories && Array.isArray(categories)) {
-        for (const category of categories) {
-          const categoryExists = await Categories.findByPk(category.categoryid);
+        for (const categoryid of categories) {
+          const categoryExists = await Categories.findByPk(categoryid);
           if (!categoryExists) {
-            errors.push(`Category "${category.categoryname}" not found for medicine "${medicinename}".`);
+            errors.push(`Category with ID "${categoryid}" not found for medicine "${medicinename}".`);
             continue;
           }
 
           await MedicineCategory.create({
             medicineid: newMedicine.medicineid,
-            categoryid: category.categoryid,
+            categoryid: categoryid,
           });
         }
       }

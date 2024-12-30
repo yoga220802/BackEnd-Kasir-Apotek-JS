@@ -581,6 +581,11 @@
         "tags": [
           "Medicine"
         ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "requestBody": {
           "description": "Data for new medicine(s). If `stock` and `expirationdate` are provided, the system will automatically process restocking. The request body supports both a single object and an array of objects.",
           "required": true,
@@ -636,6 +641,11 @@
         "summary": "Restock medicine(s)",
         "tags": [
           "Medicine"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
         ],
         "requestBody": {
           "description": "Data for restocking medicine(s). The request body supports both a single object and an array of objects.",
@@ -721,6 +731,11 @@
         "summary": "Add new category(ies)",
         "tags": [
           "Medicine"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
         ],
         "requestBody": {
           "description": "Data for new category(ies). The request body supports both a single object and an array of objects.",
@@ -1038,15 +1053,7 @@
           "categories": {
             "type": "array",
             "items": {
-              "type": "object",
-              "properties": {
-                "categoryid": {
-                  "type": "string"
-                },
-                "categoryname": {
-                  "type": "string"
-                }
-              }
+               "type": "string"
             }
           }
         }
