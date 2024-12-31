@@ -7,12 +7,16 @@
   },
   "servers": [
     {
-      "url": "http://localhost:14330",
-      "description": "Server lokal untuk pengembangan"
+      "url": "https://www.backend.tb-adbo-kel6.my.id",
+      "description": "Server produksi"
     },
     {
       "url": "https://back-end-kasir-apotek-js.vercel.app",
-      "description": "Server produksi"
+      "description": "Server produksi alternatif"
+    },
+    {
+      "url": "http://localhost:14330",
+      "description": "Server lokal untuk pengembangan"
     }
   ],
   "paths": {
@@ -138,7 +142,8 @@
               }
             }
           }
-        }
+        },
+        "x-access": "Admin"
       }
     },
     "/user/{userid}": {
@@ -231,7 +236,8 @@
               }
             }
           }
-        }
+        },
+        "x-access": "Admin"
       },
       "patch": {
         "summary": "Mengedit user berdasarkan ID",
@@ -279,7 +285,8 @@
           "404": {
             "description": "User tidak ditemukan"
           }
-        }
+        },
+        "x-access": "Logged-in User"
       }
     },
     "/user/add": {
@@ -318,7 +325,8 @@
           "400": {
             "description": "Data input tidak valid"
           }
-        }
+        },
+        "x-access": "Admin"
       }
     },
     "/user/delete/{userid}": {
@@ -350,7 +358,8 @@
           "403": {
             "description": "Tidak dapat menghapus akun Anda sendiri"
           }
-        }
+        },
+        "x-access": "Admin"
       }
     },
     "/medicine": {
@@ -381,7 +390,8 @@
           "500": {
             "description": "Internal server error"
           }
-        }
+        },
+        "x-access": "Admin, Warehouse Manager"
       }
     },
     "/medicine/{medicineid}": {
@@ -423,7 +433,8 @@
           "500": {
             "description": "Internal server error"
           }
-        }
+        },
+        "x-access": "Admin, Warehouse Manager"
       }
     },
     "/medicine/batch": {
@@ -454,7 +465,8 @@
           "500": {
             "description": "Internal server error"
           }
-        }
+        },
+        "x-access": "Admin, Warehouse Manager"
       }
     },
     "/medicine/batch/{batchid}": {
@@ -496,7 +508,8 @@
           "500": {
             "description": "Internal server error"
           }
-        }
+        },
+        "x-access": "Admin, Warehouse Manager"
       }
     },
     "/medicine/category": {
@@ -530,7 +543,8 @@
           "500": {
             "description": "Internal server error"
           }
-        }
+        },
+        "x-access": "Admin, Warehouse Manager"
       }
     },
     "/medicine/category/{categoryid}": {
@@ -572,7 +586,8 @@
           "500": {
             "description": "Internal server error"
           }
-        }
+        },
+        "x-access": "Admin, Warehouse Manager"
       }
     },
     "/medicine/add": {
@@ -633,7 +648,8 @@
               }
             }
           }
-        }
+        },
+        "x-access": "Admin, Warehouse Manager"
       }
     },
     "/medicine/restock": {
@@ -723,7 +739,8 @@
               }
             }
           }
-        }
+        },
+        "x-access": "Admin, Warehouse Manager"
       }
     },
     "/medicine/category/add": {
@@ -784,7 +801,8 @@
               }
             }
           }
-        }
+        },
+        "x-access": "Admin, Warehouse Manager"
       }
     }
   },
