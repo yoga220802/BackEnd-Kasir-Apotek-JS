@@ -435,6 +435,111 @@
           }
         },
         "x-access": "Admin, Warehouse Manager"
+      },
+      "patch": {
+        "summary": "Update a specific medicine by ID",
+        "tags": ["Medicine"],
+        "parameters": [
+          {
+            "name": "medicineid",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the medicine to update",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Data for updating the medicine",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "medicinename": {
+                    "type": "string"
+                  },
+                  "brand": {
+                    "type": "string"
+                  },
+                  "price": {
+                    "type": "number"
+                  },
+                  "unit": {
+                    "type": "string"
+                  },
+                  "categories": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Medicine updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Medicine updated successfully"
+                    },
+                    "medicine": {
+                      "type": "object",
+                      "properties": {
+                        "medicineid": {
+                          "type": "string"
+                        },
+                        "medicinename": {
+                          "type": "string"
+                        },
+                        "brand": {
+                          "type": "string"
+                        },
+                        "price": {
+                          "type": "number"
+                        },
+                        "unit": {
+                          "type": "string"
+                        },
+                        "categories": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body"
+          },
+          "404": {
+            "description": "Medicine not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-access": "Admin, Warehouse Manager"
       }
     },
     "/medicine/batch": {
@@ -510,6 +615,90 @@
           }
         },
         "x-access": "Admin, Warehouse Manager"
+      },
+      "patch": {
+        "summary": "Update a specific batch of medicines",
+        "tags": ["Medicine"],
+        "parameters": [
+          {
+            "name": "batchid",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the batch to update",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Data for updating the batch",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "medicines": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "medicineid": {
+                          "type": "string"
+                        },
+                        "amount": {
+                          "type": "number"
+                        },
+                        "expirationdate": {
+                          "type": "string",
+                          "format": "date"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Batch updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "successes": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-access": "Admin, Warehouse Manager"
       }
     },
     "/medicine/category": {
@@ -576,6 +765,129 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CategoryDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Category not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-access": "Admin, Warehouse Manager"
+      },
+      "patch": {
+        "summary": "Update a specific category description",
+        "tags": ["Medicine"],
+        "parameters": [
+          {
+            "name": "categoryid",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the category to update",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Data for updating the category description",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "categorydescription": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Category description updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Category description updated successfully"
+                    },
+                    "category": {
+                      "type": "object",
+                      "properties": {
+                        "categoryid": {
+                          "type": "string"
+                        },
+                        "categoryname": {
+                          "type": "string"
+                        },
+                        "categorydescription": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Category description is required"
+          },
+          "404": {
+            "description": "Category not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-access": "Admin, Warehouse Manager"
+      },
+      "delete": {
+        "summary": "Delete a specific category",
+        "tags": ["Medicine"],
+        "parameters": [
+          {
+            "name": "categoryid",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the category to delete",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Category deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Category deleted successfully"
+                    }
+                  }
                 }
               }
             }
@@ -738,6 +1050,109 @@
                 }
               }
             }
+          }
+        },
+        "x-access": "Admin, Warehouse Manager"
+      }
+    },
+    "/medicine/reset-stock/{medicineid}": {
+      "patch": {
+        "summary": "Reset stock of a specific medicine",
+        "tags": ["Medicine"],
+        "parameters": [
+          {
+            "name": "medicineid",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the medicine to reset stock",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Stock reset successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "All batch amounts reset successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No batches found for the given medicine ID"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-access": "Admin, Warehouse Manager"
+      }
+    },
+    "/medicine/reset-batch/{batchid}/{medicineid}": {
+      "patch": {
+        "summary": "Reset stock of a specific batch of a medicine",
+        "tags": ["Medicine"],
+        "parameters": [
+          {
+            "name": "batchid",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the batch to reset stock",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "medicineid",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the medicine to reset stock",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Batch amount reset successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Batch amount reset successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Batch not found for the given medicine ID"
+          },
+          "500": {
+            "description": "Internal server error"
           }
         },
         "x-access": "Admin, Warehouse Manager"
@@ -958,6 +1373,9 @@
                 },
                 "unit": {
                   "type": "string"
+                },
+                "amount": {
+                  "type": "number"
                 },
                 "categories": {
                   "type": "array",
