@@ -5,7 +5,7 @@ const { getMedicineCategories, getMedicinesByCategoryId } = require('../controll
 const { restockMedicine } = require('../controllers/medicineManager/addMedicineBatchController');
 const { addMedicine } = require('../controllers/medicineManager/addMedicineController');
 const { addCategory } = require('../controllers/medicineManager/addCategoryController');
-
+const { updateMedicine } = require('../controllers/medicineManager/editMedicineController');
 const { verifyToken, authorizeRole } = require('../middlewares/authMiddleware');
 
 const router = express.Router();
@@ -23,6 +23,7 @@ router.get('/category/:categoryid', verifyToken, authorizeRole('WRH', 'ADM'), ge
 router.get('/batch/:batchid', verifyToken, authorizeRole('WRH', 'ADM'), getMedicineBatchById);
 router.get('/:medicineid', verifyToken, authorizeRole('WRH', 'ADM'), getMedicineById);
 
+router.patch('/:medicineid', verifyToken, authorizeRole('WRH', 'ADM'), updateMedicine);
 
 
 module.exports = router;
