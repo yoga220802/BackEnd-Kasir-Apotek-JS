@@ -11,6 +11,7 @@ const { updateCategoryDescription } = require('../controllers/medicineManager/ed
 const { resetMedicineStock, resetBatchAmount } = require('../controllers/medicineManager/resetMedicineStockController');
 
 const { verifyToken, authorizeRole } = require('../middlewares/authMiddleware');
+const { deleteCategory } = require('../controllers/medicineManager/deleteCategoryController');
 
 const router = express.Router();
 
@@ -32,4 +33,6 @@ router.patch('/reset-batch/:batchid/:medicineid', verifyToken, authorizeRole('WR
 router.patch('/:medicineid', verifyToken, authorizeRole('WRH', 'ADM'), updateMedicine);
 router.patch('/batch/:batchid', verifyToken, authorizeRole('WRH', 'ADM'), updateMedicineBatch);
 router.patch('/category/:categoryid', verifyToken, authorizeRole('WRH', 'ADM'), updateCategoryDescription);
+
+router.delete('/category/:categoryid', verifyToken, authorizeRole('WRH', 'ADM'), deleteCategory);
 module.exports = router;
