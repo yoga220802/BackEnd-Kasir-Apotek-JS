@@ -55,7 +55,7 @@ exports.getMedicineBatchById = async (req, res) => {
     // Ambil data batch berdasarkan batchid
     const batchData = await MedicineBatch.findAll({
       where: { batchid },
-      attributes: ["batchid", "entryat", "expirationdate", "medicineid"],
+      attributes: ["batchid", "entryat", "expirationdate", "medicineid", "amount"],
       include: [
         {
           model: MedicineData,
@@ -97,6 +97,7 @@ exports.getMedicineBatchById = async (req, res) => {
         price: batch.Medicine.price,
         totalStock: batch.Medicine.stock,
         unit: batch.Medicine.unit,
+        amount: batch.amount, // Add amount to the response
         categories: batch.Medicine.Categories.map((category) => ({
           categoryID: category.categoryid,
           categoryName: category.categoryname,
