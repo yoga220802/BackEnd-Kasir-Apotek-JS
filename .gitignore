@@ -131,3 +131,6 @@ dist
 
 # ignore txt
 *.txt
+
+# ignore datasets
+*/datasets
