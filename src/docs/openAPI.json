@@ -1,0 +1,1528 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "API Kasir Apotek",
+    "description": "Dokumentasi API untuk sistem kasir apotek",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://www.backend.tb-adbo-kel6.my.id",
+      "description": "Server produksi"
+    },
+    {
+      "url": "https://back-end-kasir-apotek-js.vercel.app",
+      "description": "Server produksi alternatif"
+    },
+    {
+      "url": "http://localhost:14330",
+      "description": "Server lokal untuk pengembangan"
+    }
+  ],
+  "paths": {
+    "/docs": {
+      "get": {
+        "summary": "Akses dokumentasi untuk semua endpoint",
+        "tags": [
+          "Documentation"
+        ],
+        "responses": {
+          "200": {
+            "description": "Dokumentasi berhasil diakses",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Dokumentasi berhasil diakses"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "summary": "Authenticate a user and return a JWT token",
+        "tags": [
+          "Authentication"
+        ],
+        "requestBody": {
+          "description": "Credential user untuk autentikasi",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "user@example.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "userpassword"
+                  }
+                },
+                "required": [
+                  "email",
+                  "password"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login berhasil",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Login successful"
+                    },
+                    "token": {
+                      "type": "string",
+                      "example": "JWT_TOKEN"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Login gagal, email atau password salah",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid email or password"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user": {
+      "get": {
+        "summary": "Mendapatkan daftar semua user",
+        "tags": [
+          "User Management"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Daftar user berhasil diambil",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-access": "Admin"
+      }
+    },
+    "/user/{userid}": {
+      "get": {
+        "summary": "Mengambil data user berdasarkan ID",
+        "tags": [
+          "User Management"
+        ],
+        "parameters": [
+          {
+            "name": "userid",
+            "in": "path",
+            "required": true,
+            "description": "ID user yang ingin diambil datanya",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Data user berhasil diambil",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "User retrieved successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/User"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "User ID tidak diberikan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "User ID is required"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "User not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Kesalahan server",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-access": "Admin"
+      },
+      "patch": {
+        "summary": "Mengedit user berdasarkan ID",
+        "tags": [
+          "User Management"
+        ],
+        "parameters": [
+          {
+            "name": "userid",
+            "in": "path",
+            "required": true,
+            "description": "ID user yang akan diubah",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Data yang ingin diperbarui",
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User berhasil diperbarui",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User tidak ditemukan"
+          }
+        },
+        "x-access": "Logged-in User"
+      }
+    },
+    "/user/add": {
+      "post": {
+        "summary": "Menambahkan user baru",
+        "tags": [
+          "User Management"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Data user baru",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User berhasil ditambahkan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Data input tidak valid"
+          }
+        },
+        "x-access": "Admin"
+      }
+    },
+    "/user/delete/{userid}": {
+      "delete": {
+        "summary": "Menghapus user berdasarkan ID",
+        "tags": [
+          "User Management"
+        ],
+        "parameters": [
+          {
+            "name": "userid",
+            "in": "path",
+            "required": true,
+            "description": "ID user yang akan dihapus",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User berhasil dihapus"
+          },
+          "403": {
+            "description": "Tidak dapat menghapus akun Anda sendiri"
+          }
+        },
+        "x-access": "Admin"
+      }
+    },
+    "/medicine": {
+      "get": {
+        "summary": "Retrieve a list of medicines",
+        "tags": [
+          "Medicine"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of medicines retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Medicine"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-access": "Admin, Warehouse Manager"
+      }
+    },
+    "/medicine/{medicineid}": {
+      "get": {
+        "summary": "Retrieve a single medicine by ID",
+        "tags": [
+          "Medicine"
+        ],
+        "parameters": [
+          {
+            "name": "medicineid",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the medicine to retrieve",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Medicine retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Medicine"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Medicine not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-access": "Admin, Warehouse Manager"
+      },
+      "patch": {
+        "summary": "Update a specific medicine by ID",
+        "tags": ["Medicine"],
+        "parameters": [
+          {
+            "name": "medicineid",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the medicine to update",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Data for updating the medicine",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "medicinename": {
+                    "type": "string"
+                  },
+                  "brand": {
+                    "type": "string"
+                  },
+                  "price": {
+                    "type": "number"
+                  },
+                  "unit": {
+                    "type": "string"
+                  },
+                  "categories": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Medicine updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Medicine updated successfully"
+                    },
+                    "medicine": {
+                      "type": "object",
+                      "properties": {
+                        "medicineid": {
+                          "type": "string"
+                        },
+                        "medicinename": {
+                          "type": "string"
+                        },
+                        "brand": {
+                          "type": "string"
+                        },
+                        "price": {
+                          "type": "number"
+                        },
+                        "unit": {
+                          "type": "string"
+                        },
+                        "categories": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body"
+          },
+          "404": {
+            "description": "Medicine not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-access": "Admin, Warehouse Manager"
+      }
+    },
+    "/medicine/batch": {
+      "get": {
+        "summary": "Retrieve a list of medicine batches",
+        "tags": [
+          "Medicine"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of batches retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Batch"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-access": "Admin, Warehouse Manager"
+      }
+    },
+    "/medicine/batch/{batchid}": {
+      "get": {
+        "summary": "Retrieve batch details by batch ID",
+        "tags": [
+          "Medicine"
+        ],
+        "parameters": [
+          {
+            "name": "batchid",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the batch to retrieve",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Batch details retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BatchDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Batch not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-access": "Admin, Warehouse Manager"
+      },
+      "patch": {
+        "summary": "Update a specific batch of medicines",
+        "tags": ["Medicine"],
+        "parameters": [
+          {
+            "name": "batchid",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the batch to update",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Data for updating the batch",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "medicines": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "medicineid": {
+                          "type": "string"
+                        },
+                        "amount": {
+                          "type": "number"
+                        },
+                        "expirationdate": {
+                          "type": "string",
+                          "format": "date"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Batch updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "successes": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-access": "Admin, Warehouse Manager"
+      }
+    },
+    "/medicine/category": {
+      "get": {
+        "summary": "Retrieve a list of medicine categories",
+        "tags": [
+          "Medicine"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of categories retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Category"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No categories found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-access": "Admin, Warehouse Manager"
+      }
+    },
+    "/medicine/category/{categoryid}": {
+      "get": {
+        "summary": "Retrieve medicines by category ID",
+        "tags": [
+          "Medicine"
+        ],
+        "parameters": [
+          {
+            "name": "categoryid",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the category to retrieve medicines for",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Medicines retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Category not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-access": "Admin, Warehouse Manager"
+      },
+      "patch": {
+        "summary": "Update a specific category description",
+        "tags": ["Medicine"],
+        "parameters": [
+          {
+            "name": "categoryid",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the category to update",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Data for updating the category description",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "categorydescription": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Category description updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Category description updated successfully"
+                    },
+                    "category": {
+                      "type": "object",
+                      "properties": {
+                        "categoryid": {
+                          "type": "string"
+                        },
+                        "categoryname": {
+                          "type": "string"
+                        },
+                        "categorydescription": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Category description is required"
+          },
+          "404": {
+            "description": "Category not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-access": "Admin, Warehouse Manager"
+      },
+      "delete": {
+        "summary": "Delete a specific category",
+        "tags": ["Medicine"],
+        "parameters": [
+          {
+            "name": "categoryid",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the category to delete",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Category deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Category deleted successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Category not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-access": "Admin, Warehouse Manager"
+      }
+    },
+    "/medicine/add": {
+      "post": {
+        "summary": "Add new medicine(s)",
+        "tags": [
+          "Medicine"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Data for new medicine(s). If `stock` and `expirationdate` are provided, the system will automatically process restocking. The request body supports both a single object and an array of objects.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/MedicineInput"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/MedicineInput"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Medicine(s) added successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "successes": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-access": "Admin, Warehouse Manager"
+      }
+    },
+    "/medicine/restock": {
+      "post": {
+        "summary": "Restock medicine(s)",
+        "tags": [
+          "Medicine"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Data for restocking medicine(s). The request body supports both a single object and an array of objects.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/RestockInput"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/RestockInput"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Restock process completed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "successfulRestocks": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "medicineid": {
+                            "type": "string"
+                          },
+                          "medicinename": {
+                            "type": "string"
+                          },
+                          "amount": {
+                            "type": "number"
+                          },
+                          "expirationdate": {
+                            "type": "string",
+                            "format": "date"
+                          }
+                        }
+                      }
+                    },
+                    "failedRestocks": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "medicineid": {
+                            "type": "string"
+                          },
+                          "medicinename": {
+                            "type": "string"
+                          },
+                          "reason": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-access": "Admin, Warehouse Manager"
+      }
+    },
+    "/medicine/reset-stock/{medicineid}": {
+      "patch": {
+        "summary": "Reset stock of a specific medicine",
+        "tags": ["Medicine"],
+        "parameters": [
+          {
+            "name": "medicineid",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the medicine to reset stock",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Stock reset successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "All batch amounts reset successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No batches found for the given medicine ID"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-access": "Admin, Warehouse Manager"
+      }
+    },
+    "/medicine/reset-batch/{batchid}/{medicineid}": {
+      "patch": {
+        "summary": "Reset stock of a specific batch of a medicine",
+        "tags": ["Medicine"],
+        "parameters": [
+          {
+            "name": "batchid",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the batch to reset stock",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "medicineid",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the medicine to reset stock",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Batch amount reset successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Batch amount reset successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Batch not found for the given medicine ID"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-access": "Admin, Warehouse Manager"
+      }
+    },
+    "/medicine/category/add": {
+      "post": {
+        "summary": "Add new category(ies)",
+        "tags": [
+          "Medicine"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Data for new category(ies). The request body supports both a single object and an array of objects.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/CategoryInput"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/CategoryInput"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Category(ies) added successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "successes": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-access": "Admin, Warehouse Manager"
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "userid": {
+            "type": "string"
+          },
+          "fullname": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "userphone": {
+            "type": "string"
+          },
+          "role": {
+            "type": "object",
+            "properties": {
+              "roleid": {
+                "type": "string"
+              },
+              "rolename": {
+                "type": "string"
+              }
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-12-24T07:27:27.215Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-12-24T07:27:27.752Z"
+          }
+        }
+      },
+      "Medicine": {
+        "type": "object",
+        "properties": {
+          "medicineID": {
+            "type": "string"
+          },
+          "medicineName": {
+            "type": "string"
+          },
+          "brand": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          },
+          "stock": {
+            "type": "number"
+          },
+          "unit": {
+            "type": "string"
+          },
+          "createdat": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedat": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "batches": {
+            "type": "array",
+            "items": {
+              "properties": {
+                "batchid": {
+                  "type": "string"
+                },
+                "expirationdate": {
+                  "type": "string",
+                  "format": "date"
+                }
+              }
+            }
+          },
+          "categories": {
+            "type": "array",
+            "items": {
+              "properties": {
+                "categoryID": {
+                  "type": "string"
+                },
+                "categoryName": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "Batch": {
+        "type": "object",
+        "properties": {
+          "batchid": {
+            "type": "string"
+          },
+          "entryat": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      },
+      "BatchDetails": {
+        "type": "object",
+        "properties": {
+          "batchid": {
+            "type": "string"
+          },
+          "entryat": {
+            "type": "string",
+            "format": "date"
+          },
+          "medicines": {
+            "type": "array",
+            "items": {
+              "properties": {
+                "medicineID": {
+                  "type": "string"
+                },
+                "expirationdate": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "medicineName": {
+                  "type": "string"
+                },
+                "brand": {
+                  "type": "string"
+                },
+                "price": {
+                  "type": "number"
+                },
+                "totalStock": {
+                  "type": "number"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "amount": {
+                  "type": "number"
+                },
+                "categories": {
+                  "type": "array",
+                  "items": {
+                    "properties": {
+                      "categoryID": {
+                        "type": "string"
+                      },
+                      "categoryName": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "Category": {
+        "type": "object",
+        "properties": {
+          "categoryID": {
+            "type": "string"
+          },
+          "categoryName": {
+            "type": "string"
+          },
+          "categoryDescription": {
+            "type": "string"
+          }
+        }
+      },
+      "CategoryDetails": {
+        "type": "object",
+        "properties": {
+          "categoryID": {
+            "type": "string"
+          },
+          "categoryName": {
+            "type": "string"
+          },
+          "categoryDescription": {
+            "type": "string"
+          },
+          "medicines": {
+            "type": "array",
+            "items": {
+              "properties": {
+                "medicineID": {
+                  "type": "string"
+                },
+                "medicineName": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "UserInput": {
+        "type": "object",
+        "properties": {
+          "fullname": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "userphone": {
+            "type": "string"
+          },
+          "roleid": {
+            "type": "string"
+          }
+        }
+      },
+      "MedicineInput": {
+        "type": "object",
+        "properties": {
+          "medicinename": {
+            "type": "string"
+          },
+          "brand": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          },
+          "stock": {
+            "type": "number"
+          },
+          "unit": {
+            "type": "string"
+          },
+          "createdat": {
+            "type": "string",
+            "format": "date"
+          },
+          "updatedat": {
+            "type": "string",
+            "format": "date"
+          },
+          "expirationdate": {
+            "type": "string",
+            "format": "date"
+          },
+          "categories": {
+            "type": "array",
+            "items": {
+               "type": "string"
+            }
+          }
+        }
+      },
+      "RestockInput": {
+        "type": "object",
+        "properties": {
+          "medicineid": {
+            "type": "string"
+          },
+          "medicinename": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "number"
+          },
+          "expirationdate": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      },
+      "CategoryInput": {
+        "type": "object",
+        "properties": {
+          "categoryname": {
+            "type": "string"
+          },
+          "categorydescription": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
