@@ -1,25 +1,31 @@
-const { Categories, MedicineCategory } = require('../../models/medicines/associations');
+const {
+	Categories,
+	MedicineCategory,
+} = require("../../models/medicines/associations");
 
 exports.deleteCategory = async (req, res) => {
-  const { categoryid } = req.params;
+	const { categoryid } = req.params;
 
-  try {
-    // Cari kategori berdasarkan ID
-    const category = await Categories.findOne({ where: { categoryid } });
+	try {
+		const category = await Categories.findOne({ where: { categoryid } });
 
-    if (!category) {
-      return res.status(404).json({ message: 'Category not found' });
-    }
+		if (!category) {
+			return res.status(404).json({ message: "Category not found" });
+		}
 
-    // Hapus data kategori terkait di tabel junction
-    await MedicineCategory.destroy({ where: { categoryid } });
+		await MedicineCategory.destroy({ where: { categoryid } });
 
-    // Hapus kategori
-    await category.destroy();
+		await category.destroy();
 
-    res.status(200).json({ message: 'Category deleted successfully' });
-  } catch (error) {
-    console.error('Error deleting category:', error);
-    res.status(500).json({ message: 'Internal server error' });
-  }
+		res.status(200).json({ message: "Category deleted successfully" });
+	} catch (error) {
+		console.error("Error deleting category:", error);
+		if (error.name === 'SequelizeForeignKeyConstraintError') {
+			return res.status(409).json({ message: "Cannot delete category due to foreign key constraint" });
+		}
+		if (error.name === 'SequelizeDatabaseError') {
+			return res.status(400).json({ message: "Database error occurred" });
+		}
+		res.status(500).json({ message: "Internal server error" });
+	}
 };

@@ -19,6 +19,9 @@ exports.getMedicineCategories = async (req, res) => {
 		});
 	} catch (error) {
 		console.error("Error fetching categories:", error);
+		if (error.name === "SequelizeConnectionError") {
+			return res.status(503).json({ message: "Service unavailable" });
+		}
 		res.status(500).json({ message: "Internal server error" });
 	}
 };
@@ -60,6 +63,9 @@ exports.getMedicinesByCategoryId = async (req, res) => {
 		});
 	} catch (error) {
 		console.error("Error fetching medicines by category ID:", error);
+		if (error.name === "SequelizeConnectionError") {
+			return res.status(503).json({ message: "Service unavailable" });
+		}
 		res.status(500).json({ message: "Internal server error" });
 	}
 };

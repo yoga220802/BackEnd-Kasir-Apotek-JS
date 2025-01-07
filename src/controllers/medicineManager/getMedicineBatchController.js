@@ -36,6 +36,9 @@ exports.getMedicineBatches = async (req, res) => {
 		res.status(200).json(formattedBatches);
 	} catch (error) {
 		console.error("Error fetching medicine batches:", error);
+		if (error.name === "SequelizeConnectionError") {
+			return res.status(503).json({ message: "Service unavailable" });
+		}
 		res.status(500).json({ message: "Internal server error" });
 	}
 };
@@ -102,6 +105,9 @@ exports.getMedicineBatchById = async (req, res) => {
 		});
 	} catch (error) {
 		console.error("Error fetching medicine batch by ID:", error);
+		if (error.name === "SequelizeConnectionError") {
+			return res.status(503).json({ message: "Service unavailable" });
+		}
 		res.status(500).json({ message: "Internal server error" });
 	}
 };

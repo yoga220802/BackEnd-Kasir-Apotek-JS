@@ -52,6 +52,12 @@ exports.getMedicines = async (req, res) => {
 		if (error.name === "SequelizeConnectionError") {
 			return res.status(503).json({ message: "Service unavailable" });
 		}
+		if (error.name === "SequelizeValidationError") {
+			return res.status(400).json({ message: "Validation error" });
+		}
+		if (error.name === "SequelizeDatabaseError") {
+			return res.status(500).json({ message: "Database error" });
+		}
 		res.status(500).json({ message: "Internal server error" });
 	}
 };
@@ -101,6 +107,12 @@ exports.getMedicineById = async (req, res) => {
 		console.error("Error fetching medicine by ID:", error);
 		if (error.name === "SequelizeConnectionError") {
 			return res.status(503).json({ message: "Service unavailable" });
+		}
+		if (error.name === "SequelizeValidationError") {
+			return res.status(400).json({ message: "Validation error" });
+		}
+		if (error.name === "SequelizeDatabaseError") {
+			return res.status(500).json({ message: "Database error" });
 		}
 		res.status(500).json({ message: "Internal server error" });
 	}
