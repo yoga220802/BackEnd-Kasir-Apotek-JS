@@ -17,7 +17,7 @@ exports.restockMedicine = async (req, res = null) => {
 		const failedRestocks = [];
 
 		for (const medicine of medicines) {
-			const { medicineid, medicinename, amount, expirationdate } = medicine;
+			const { medicineid, amount, expirationdate } = medicine;
 
 			const existingMedicine = await MedicineData.findOne({
 				where: { medicineid },
@@ -26,7 +26,6 @@ exports.restockMedicine = async (req, res = null) => {
 			if (!existingMedicine) {
 				failedRestocks.push({
 					medicineid,
-					medicinename,
 					reason: "Medicine ID not found in the database.",
 				});
 				continue;
