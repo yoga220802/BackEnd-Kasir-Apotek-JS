@@ -88,7 +88,7 @@ exports.getMedicineBatchById = async (req, res) => {
 				medicinename: batch.Medicine.medicinename,
 				brand: batch.Medicine.brand,
 				price: batch.Medicine.price,
-				totalStock: batch.Medicine.stock,
+				stock: batch.Medicine.stock,
 				unit: batch.Medicine.unit,
 				amount: batch.amount,
 				isDeleted: batch.Medicine.is_deleted,
