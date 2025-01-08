@@ -12,5 +12,5 @@ router.get('/', verifyToken, authorizeRole('ADM'), getUsers);
 router.get('/:userid', verifyToken, authorizeRole('ADM'), getUserById);
 router.post('/add', verifyToken, authorizeRole('ADM'), addUser);
 router.delete('/delete/:userid', verifyToken, authorizeRole('ADM'),preventSelfDeletion, deleteUser);
-router.patch('/:userid', verifyToken, editUser);
+router.patch('/:userid', verifyToken, authorizeRole('ADM'), editUser);
 module.exports = router;

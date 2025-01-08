@@ -8,7 +8,11 @@
     "build": "npm install",
     "vercel-build": "echo 'Build step completed'",
     "predeploy": "sh ./predeploy.sh",
-    "deploy": "vercel --prod"
+    "deploy": "vercel --prod",
+    "seed:categories": "node src/seeders/seedCategories.js",
+    "seed:medicineData": "node src/seeders/seedMedicineData.js",
+    "seed:medicineBatch": "node src/seeders/seedMedicineBatch.js",
+    "seed:medicineCategory": "node src/seeders/seedMedicineCategory.js"
   },
   "repository": {
     "type": "git",
@@ -25,6 +29,7 @@
   "dependencies": {
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
+    "csv-parser": "^3.0.0",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
@@ -32,6 +37,7 @@
     "pg": "^8.13.1",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.37.5",
-    "swagger-ui-express": "^5.0.1"
+    "swagger-ui-express": "^5.0.1",
+    "uuid": "^11.0.3"
   }
 }

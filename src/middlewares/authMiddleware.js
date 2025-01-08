@@ -18,11 +18,11 @@ exports.verifyToken = (req, res, next) => {
 };
 
 // Middleware untuk memeriksa role
-exports.authorizeRole = (requiredRole) => {
+exports.authorizeRole = (...requiredRoles) => {
   return (req, res, next) => {
     const userRole = req.user.roleid;
 
-    if (userRole !== requiredRole) {
+    if (!requiredRoles.includes(userRole)) {
       return res.status(403).json({ message: 'Access denied. Insufficient permissions.' });
     }
     next();

@@ -3,6 +3,7 @@ const dotenv = require("dotenv");
 const sequelize = require("./src/config/database");
 const routes = require("./src/routes");
 const cors = require("cors");
+require("./src/models/medicines/associations"); // Memuat semua asosiasi
 
 dotenv.config();
 
@@ -18,20 +19,20 @@ app.use("/", routes);
 
 // Database connection and server start
 (async () => {
- try {
-  await sequelize.authenticate();
-  console.log("Database connection established.");
+  try {
+    await sequelize.authenticate();
+    console.log("Database connection established.");
 
-  await sequelize.sync({ force: false });
-  console.log("Models synced successfully.");
+    await sequelize.sync({ force: false }); // Sinkronisasi model
+    console.log("Models synced successfully.");
 
-  const PORT = process.env.PORT || 3000;
-  app.listen(PORT, () => {
-   console.log(`Server is running on port ${PORT}`);
-  });
- } catch (err) {
-  console.error("Failed to connect to the database:", err);
- }
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
+  } catch (err) {
+    console.error("Failed to connect to the database:", err);
+  }
 })();
 
 module.exports = app;

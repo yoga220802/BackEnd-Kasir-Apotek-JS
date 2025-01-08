@@ -7,12 +7,16 @@
   },
   "servers": [
     {
-      "url": "http://localhost:14330",
-      "description": "Server lokal untuk pengembangan"
+      "url": "https://www.backend.tb-adbo-kel6.my.id",
+      "description": "Server produksi"
     },
     {
       "url": "https://back-end-kasir-apotek-js.vercel.app",
-      "description": "Server produksi"
+      "description": "Server produksi alternatif"
+    },
+    {
+      "url": "http://localhost:14330",
+      "description": "Server lokal untuk pengembangan"
     }
   ],
   "paths": {
@@ -138,7 +142,8 @@
               }
             }
           }
-        }
+        },
+        "x-access": "Admin"
       }
     },
     "/user/{userid}": {
@@ -231,7 +236,8 @@
               }
             }
           }
-        }
+        },
+        "x-access": "Admin"
       },
       "patch": {
         "summary": "Mengedit user berdasarkan ID",
@@ -279,7 +285,8 @@
           "404": {
             "description": "User tidak ditemukan"
           }
-        }
+        },
+        "x-access": "Logged-in User"
       }
     },
     "/user/add": {
@@ -318,7 +325,8 @@
           "400": {
             "description": "Data input tidak valid"
           }
-        }
+        },
+        "x-access": "Admin"
       }
     },
     "/user/delete/{userid}": {
@@ -350,7 +358,1844 @@
           "403": {
             "description": "Tidak dapat menghapus akun Anda sendiri"
           }
-        }
+        },
+        "x-access": "Admin"
+      }
+    },
+    "/medicine": {
+      "get": {
+        "summary": "Retrieve a list of medicines",
+        "tags": [
+          "Medicine"
+        ],
+        "description": "Medicine - General",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of medicines retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "medicineid": {
+                        "type": "string"
+                      },
+                      "medicinename": {
+                        "type": "string"
+                      },
+                      "brand": {
+                        "type": "string"
+                      },
+                      "price": {
+                        "type": "number"
+                      },
+                      "stock": {
+                        "type": "number"
+                      },
+                      "unit": {
+                        "type": "string"
+                      },
+                      "createdat": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "updatedat": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "batches": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "batchid": {
+                              "type": "string"
+                            },
+                            "expirationdate": {
+                              "type": "string",
+                              "format": "date"
+                            }
+                          }
+                        }
+                      },
+                      "categories": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "categoryid": {
+                              "type": "string"
+                            },
+                            "categoryname": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": [
+                  {
+                    "medicineid": "MED123",
+                    "medicinename": "Paracetamol",
+                    "brand": "Generic",
+                    "price": 5000,
+                    "stock": 100,
+                    "unit": "tablet",
+                    "createdat": "2024-12-24T07:27:27.215Z",
+                    "updatedat": "2024-12-24T07:27:27.752Z",
+                    "batches": [
+                      {
+                        "batchid": "b1a2c3d4-e5f6-7890-abcd-ef1234567890",
+                        "expirationdate": "2024-12-31"
+                      }
+                    ],
+                    "categories": [
+                      {
+                        "categoryid": "CAT001",
+                        "categoryname": "Painkillers"
+                      },
+                      {
+                        "categoryid": "CAT002",
+                        "categoryname": "Fever"
+                      }
+                    ]
+                  },
+                  {
+                    "medicineid": "MED124",
+                    "medicinename": "Ibuprofen",
+                    "brand": "Generic",
+                    "price": 8000,
+                    "stock": 200,
+                    "unit": "tablet",
+                    "createdat": "2024-12-24T07:27:27.215Z",
+                    "updatedat": "2024-12-24T07:27:27.752Z",
+                    "batches": [
+                      {
+                        "batchid": "b2b2c3d4-e5f6-7890-abcd-ef1234567890",
+                        "expirationdate": "2025-01-31"
+                      }
+                    ],
+                    "categories": [
+                      {
+                        "categoryid": "CAT003",
+                        "categoryname": "Anti-inflammatory"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          },
+          "404": {
+            "description": "No medicines found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "No medicines found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-access": "Admin, Warehouse Manager"
+      }
+    },
+    "/medicine/{medicineid}": {
+      "get": {
+        "summary": "Retrieve a single medicine by ID",
+        "tags": [
+          "Medicine"
+        ],
+        "description": "Medicine - General",
+        "parameters": [
+          {
+            "name": "medicineid",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the medicine to retrieve",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Medicine retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Medicine retrieved successfully"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "medicineid": {
+                          "type": "string"
+                        },
+                        "medicinename": {
+                          "type": "string"
+                        },
+                        "brand": {
+                          "type": "string"
+                        },
+                        "price": {
+                          "type": "number"
+                        },
+                        "stock": {
+                          "type": "number"
+                        },
+                        "unit": {
+                          "type": "string"
+                        },
+                        "createdat": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "updatedat": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "batches": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "batchid": {
+                                "type": "string"
+                              },
+                              "expirationdate": {
+                                "type": "string",
+                                "format": "date"
+                              }
+                            }
+                          }
+                        },
+                        "categories": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "categoryid": {
+                                "type": "string"
+                              },
+                              "categoryname": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "message": "Medicine retrieved successfully",
+                  "data": {
+                    "medicineid": "MED123",
+                    "medicinename": "Paracetamol",
+                    "brand": "Generic",
+                    "price": 5000,
+                    "stock": 100,
+                    "unit": "tablet",
+                    "createdat": "2024-12-24T07:27:27.215Z",
+                    "updatedat": "2024-12-24T07:27:27.752Z",
+                    "batches": [
+                      {
+                        "batchid": "b1a2c3d4-e5f6-7890-abcd-ef1234567890",
+                        "expirationdate": "2024-12-31"
+                      }
+                    ],
+                    "categories": [
+                      {
+                        "categoryid": "CAT001",
+                        "categoryname": "Painkillers"
+                      },
+                      {
+                        "categoryid": "CAT002",
+                        "categoryname": "Fever"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Medicine not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Medicine not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-access": "Admin, Warehouse Manager"
+      },
+      "delete": {
+        "summary": "Soft delete a specific medicine by ID",
+        "tags": [
+          "Medicine"
+        ],
+        "description": "Medicine - General",
+        "parameters": [
+          {
+            "name": "medicineid",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the medicine to delete",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Medicine deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Medicine deleted successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Medicine not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Medicine not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-access": "Admin, Warehouse Manager"
+      }
+    },
+    "/medicine/batch": {
+      "get": {
+        "summary": "Retrieve a list of medicine batches",
+        "tags": [
+          "Medicine"
+        ],
+        "description": "Medicine - Batch",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of batches retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "batchid": {
+                        "type": "string"
+                      },
+                      "entryat": {
+                        "type": "string",
+                        "format": "date"
+                      }
+                    }
+                  }
+                },
+                "example": [
+                  {
+                    "batchid": "b1a2c3d4-e5f6-7890-abcd-ef1234567890",
+                    "entryat": "2024-12-31"
+                  },
+                  {
+                    "batchid": "b2b2c3d4-e5f6-7890-abcd-ef1234567890",
+                    "entryat": "2025-01-31"
+                  }
+                ]
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-access": "Admin, Warehouse Manager"
+      }
+    },
+    "/medicine/batch/{batchid}": {
+      "get": {
+        "summary": "Retrieve batch details by batch ID",
+        "tags": [
+          "Medicine"
+        ],
+        "description": "Medicine - Batch",
+        "parameters": [
+          {
+            "name": "batchid",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the batch to retrieve",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Batch details retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Medicine batch retrieved successfully"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "batchid": {
+                          "type": "string"
+                        },
+                        "entryat": {
+                          "type": "string",
+                          "format": "date"
+                        },
+                        "medicines": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "medicineid": {
+                                "type": "string"
+                              },
+                              "expirationdate": {
+                                "type": "string",
+                                "format": "date"
+                              },
+                              "medicinename": {
+                                "type": "string"
+                              },
+                              "brand": {
+                                "type": "string"
+                              },
+                              "price": {
+                                "type": "number"
+                              },
+                              "stock": {
+                                "type": "number"
+                              },
+                              "unit": {
+                                "type": "string"
+                              },
+                              "amount": {
+                                "type": "number"
+                              },
+                              "isDeleted": {
+                                "type": "boolean"
+                              },
+                              "categories": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "categoryID": {
+                                      "type": "string"
+                                    },
+                                    "categoryName": {
+                                      "type": "string"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "message": "Medicine batch retrieved successfully",
+                  "data": {
+                    "batchid": "b1a2c3d4-e5f6-7890-abcd-ef1234567890",
+                    "entryat": "2024-12-31",
+                    "medicines": [
+                      {
+                        "medicineid": "MED123",
+                        "expirationdate": "2024-12-31",
+                        "medicinename": "Paracetamol",
+                        "brand": "Generic",
+                        "price": 5000,
+                        "stock": 100,
+                        "unit": "tablet",
+                        "amount": 50,
+                        "isDeleted": false,
+                        "categories": [
+                          {
+                            "categoryID": "CAT001",
+                            "categoryName": "Painkillers"
+                          },
+                          {
+                            "categoryID": "CAT002",
+                            "categoryName": "Fever"
+                          }
+                        ]
+                      },
+                      {
+                        "medicineid": "MED124",
+                        "expirationdate": "2025-01-31",
+                        "medicinename": "Ibuprofen",
+                        "brand": "Generic",
+                        "price": 8000,
+                        "stock": 200,
+                        "unit": "tablet",
+                        "amount": 100,
+                        "isDeleted": false,
+                        "categories": [
+                          {
+                            "categoryID": "CAT003",
+                            "categoryName": "Anti-inflammatory"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Batch not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Batch not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-access": "Admin, Warehouse Manager"
+      }
+    },
+    "/medicine/category": {
+      "get": {
+        "summary": "Retrieve a list of medicine categories",
+        "tags": [
+          "Medicine"
+        ],
+        "description": "Medicine - Category",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of categories retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "categoryid": {
+                        "type": "string"
+                      },
+                      "categoryname": {
+                        "type": "string"
+                      },
+                      "categorydescription": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "example": [
+                  {
+                    "categoryid": "CAT001",
+                    "categoryname": "Painkillers",
+                    "categorydescription": "Medicines used to relieve pain."
+                  },
+                  {
+                    "categoryid": "CAT002",
+                    "categoryname": "Antibiotics",
+                    "categorydescription": "Medicines that kill or inhibit the growth of bacteria."
+                  }
+                ]
+              }
+            }
+          },
+          "404": {
+            "description": "No categories found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "No categories found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-access": "Admin, Warehouse Manager"
+      }
+    },
+    "/medicine/category/{categoryid}": {
+      "get": {
+        "summary": "Retrieve medicines by category ID",
+        "tags": [
+          "Medicine"
+        ],
+        "description": "Medicine - Category",
+        "parameters": [
+          {
+            "name": "categoryid",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the category to retrieve medicines for",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Medicines retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Medicines retrieved successfully"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "categoryid": {
+                          "type": "string"
+                        },
+                        "categoryname": {
+                          "type": "string"
+                        },
+                        "categorydescription": {
+                          "type": "string"
+                        },
+                        "medicines": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "medicineid": {
+                                "type": "string"
+                              },
+                              "medicineName": {
+                                "type": "string"
+                              },
+                              "isDeleted": {
+                                "type": "boolean"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "message": "Medicines retrieved successfully",
+                  "data": {
+                    "categoryid": "CAT001",
+                    "categoryname": "Painkillers",
+                    "categorydescription": "Medicines used to relieve pain.",
+                    "medicines": [
+                      {
+                        "medicineid": "MED123",
+                        "medicineName": "Paracetamol",
+                        "isDeleted": false
+                      },
+                      {
+                        "medicineid": "MED124",
+                        "medicineName": "Ibuprofen",
+                        "isDeleted": false
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Category not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Category not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-access": "Admin, Warehouse Manager"
+      },
+      "patch": {
+        "summary": "Update a specific category description",
+        "tags": [
+          "Medicine"
+        ],
+        "description": "Medicine - Category",
+        "parameters": [
+          {
+            "name": "categoryid",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the category to update",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Data for updating the category description",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "categorydescription": {
+                    "type": "string"
+                  }
+                }
+              },
+              "examples": {
+                "updateDescription": {
+                  "summary": "Update category description",
+                  "value": {
+                    "categorydescription": "Updated description for the category."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Category description updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Category description updated successfully"
+                    },
+                    "category": {
+                      "type": "object",
+                      "properties": {
+                        "categoryid": {
+                          "type": "string"
+                        },
+                        "categoryname": {
+                          "type": "string"
+                        },
+                        "categorydescription": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Category description is required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Category description is required"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Category not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Category not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-access": "Admin, Warehouse Manager"
+      },
+      "delete": {
+        "summary": "Delete a specific category",
+        "tags": [
+          "Medicine"
+        ],
+        "description": "Medicine - Category",
+        "parameters": [
+          {
+            "name": "categoryid",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the category to delete",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Category deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Category deleted successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Category not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Category not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Cannot delete category due to foreign key constraint",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Cannot delete category due to foreign key constraint"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Database error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Database error occurred"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-access": "Admin, Warehouse Manager"
+      }
+    },
+    "/medicine/add": {
+      "post": {
+        "summary": "Add new medicine(s)",
+        "tags": [
+          "Medicine"
+        ],
+        "description": "Medicine - General",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Data for new medicine(s). If `stock` and `expirationdate` are provided, the system will automatically process restocking. The request body supports both a single object and an array of objects.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/MedicineInput"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/MedicineInput"
+                    }
+                  }
+                ]
+              },
+              "examples": {
+                "singleObject": {
+                  "summary": "Single medicine",
+                  "value": {
+                    "medicinename": "Paracetamol",
+                    "brand": "Generic",
+                    "price": 5000,
+                    "stock": 100,
+                    "unit": "tablet",
+                    "expirationdate": "2024-12-31",
+                    "categories": ["CAT001", "CAT002"]
+                  }
+                },
+                "arrayOfObjects": {
+                  "summary": "Multiple medicines",
+                  "value": [
+                    {
+                      "medicinename": "Paracetamol",
+                      "brand": "Generic",
+                      "price": 5000,
+                      "stock": 100,
+                      "unit": "tablet",
+                      "expirationdate": "2024-12-31",
+                      "categories": ["CAT001", "CAT002"]
+                    },
+                    {
+                      "medicinename": "Ibuprofen",
+                      "brand": "Generic",
+                      "price": 8000,
+                      "unit": "tablet",
+                      "categories": ["CAT003"]
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Medicine(s) added successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "successes": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "successes": [
+                    "Medicine \"Paracetamol\" added successfully.",
+                    "Restock for medicine \"Paracetamol\" added successfully."
+                  ],
+                  "errors": [
+                    "Category with ID \"CAT003\" not found for medicine \"Ibuprofen\"."
+                  ]
+                }
+              }
+            }
+          },
+          "207": {
+            "description": "Some medicines were successfully added, while others failed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "successes": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "successes": [
+                    "Medicine \"Paracetamol\" added successfully.",
+                    "Restock for medicine \"Paracetamol\" added successfully."
+                  ],
+                  "errors": [
+                    "Category with ID \"CAT003\" not found for medicine \"Ibuprofen\"."
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "All medicines failed to be added due to validation or other errors.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "successes": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "successes": [],
+                  "errors": [
+                    "Medicine with name \"Paracetamol\" already exists.",
+                    "Failed to process medicine \"Ibuprofen\". Error: Validation error."
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized. Missing or invalid token.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Access denied. Unauthorized."
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden. Insufficient permissions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Access denied. Insufficient permissions."
+                }
+              }
+            }
+          }
+        },
+        "x-access": "Admin, Warehouse Manager"
+      }
+    },
+    "/medicine/restock": {
+      "post": {
+        "summary": "Restock medicine(s)",
+        "tags": [
+          "Medicine"
+        ],
+        "description": "Medicine - General",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Data for restocking medicine(s). The request body supports both a single object and an array of objects.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/RestockInput"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/RestockInput"
+                    }
+                  }
+                ]
+              },
+              "examples": {
+                "singleObject": {
+                  "summary": "Single medicine restock",
+                  "value": {
+                    "medicineid": "MED123",
+                    "amount": 100,
+                    "expirationdate": "2024-12-31"
+                  }
+                },
+                "arrayOfObjects": {
+                  "summary": "Multiple medicines restock",
+                  "value": [
+                    {
+                      "medicineid": "MED123",
+                      "amount": 100,
+                      "expirationdate": "2024-12-31"
+                    },
+                    {
+                      "medicineid": "MED124",
+                      "amount": 200,
+                      "expirationdate": "2025-01-31"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Restock process completed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Restock process completed."
+                    },
+                    "batchid": {
+                      "type": "string",
+                      "example": "b1a2c3d4-e5f6-7890-abcd-ef1234567890"
+                    },
+                    "successfulRestocks": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "medicineid": {
+                            "type": "string"
+                          },
+                          "medicinename": {
+                            "type": "string"
+                          },
+                          "amount": {
+                            "type": "number"
+                          },
+                          "expirationdate": {
+                            "type": "string",
+                            "format": "date"
+                          }
+                        }
+                      }
+                    },
+                    "failedRestocks": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "medicineid": {
+                            "type": "string"
+                          },
+                          "reason": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "message": "Restock process completed.",
+                  "batchid": "b1a2c3d4-e5f6-7890-abcd-ef1234567890",
+                  "successfulRestocks": [
+                    {
+                      "medicineid": "MED123",
+                      "medicinename": "Paracetamol",
+                      "amount": 100,
+                      "expirationdate": "2024-12-31"
+                    }
+                  ],
+                  "failedRestocks": [
+                    {
+                      "medicineid": "MED124",
+                      "reason": "Medicine ID not found in the database."
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Validation error."
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Validation error message."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error."
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Detailed error message."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-access": "Admin, Warehouse Manager"
+      }
+    },
+    "/medicine/reset-stock/{medicineid}": {
+      "patch": {
+        "summary": "Reset stock of a specific medicine",
+        "tags": [
+          "Medicine"
+        ],
+        "description": "Medicine - General",
+        "parameters": [
+          {
+            "name": "medicineid",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the medicine to reset stock",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Stock reset successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "All batch amounts reset successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No batches found for the given medicine ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "No batches found for the given medicine ID"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-access": "Admin, Warehouse Manager"
+      }
+    },
+    "/medicine/reset-batch/{batchid}/{medicineid}": {
+      "patch": {
+        "summary": "Reset stock of a specific batch of a medicine",
+        "tags": [
+          "Medicine"
+        ],
+        "description": "Medicine - Batch",
+        "parameters": [
+          {
+            "name": "batchid",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the batch to reset stock",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "medicineid",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the medicine to reset stock",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Batch amount reset successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Batch amount reset successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Batch not found for the given medicine ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Batch not found for the given medicine ID"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-access": "Admin, Warehouse Manager"
+      }
+    },
+    "/medicine/category/add": {
+      "post": {
+        "summary": "Add new category(ies)",
+        "tags": [
+          "Medicine"
+        ],
+        "description": "Medicine - Category",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Data for new category(ies). The request body supports both a single object and an array of objects.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/CategoryInput"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/CategoryInput"
+                    }
+                  }
+                ]
+              },
+              "examples": {
+                "singleObject": {
+                  "summary": "Single category",
+                  "value": {
+                    "categoryname": "Painkillers",
+                    "categorydescription": "Medicines used to relieve pain."
+                  }
+                },
+                "arrayOfObjects": {
+                  "summary": "Multiple categories",
+                  "value": [
+                    {
+                      "categoryname": "Antibiotics",
+                      "categorydescription": "Medicines that kill or inhibit the growth of bacteria."
+                    },
+                    {
+                      "categoryname": "Vitamins",
+                      "categorydescription": "Supplements to improve health."
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "All categories were successfully added.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "successes": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "successes": [
+                    "Category \"Painkillers\" added successfully."
+                  ],
+                  "errors": []
+                }
+              }
+            }
+          },
+          "207": {
+            "description": "Some categories were successfully added, while others failed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "successes": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "successes": [
+                    "Category \"Painkillers\" added successfully."
+                  ],
+                  "errors": [
+                    "Category \"Antibiotics\" already exists."
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "All categories failed to be added due to validation or other errors.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "successes": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "successes": [],
+                  "errors": [
+                    "Category \"Painkillers\" already exists.",
+                    "Both 'categoryname' and 'categorydescription' are required."
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized. Missing or invalid token.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Access denied. Unauthorized."
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden. Insufficient permissions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Access denied. Insufficient permissions."
+                }
+              }
+            }
+          }
+        },
+        "x-access": "Admin, Warehouse Manager"
       }
     }
   },
@@ -401,6 +2246,177 @@
           }
         }
       },
+      "Medicine": {
+        "type": "object",
+        "properties": {
+          "medicineID": {
+            "type": "string"
+          },
+          "medicineName": {
+            "type": "string"
+          },
+          "brand": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          },
+          "stock": {
+            "type": "number"
+          },
+          "unit": {
+            "type": "string"
+          },
+          "createdat": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedat": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "is_deleted": {
+            "type": "boolean"
+          },
+          "batches": {
+            "type": "array",
+            "items": {
+              "properties": {
+                "batchid": {
+                  "type": "string"
+                },
+                "expirationdate": {
+                  "type": "string",
+                  "format": "date"
+                }
+              }
+            }
+          },
+          "categories": {
+            "type": "array",
+            "items": {
+              "properties": {
+                "categoryID": {
+                  "type": "string"
+                },
+                "categoryName": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "Batch": {
+        "type": "object",
+        "properties": {
+          "batchid": {
+            "type": "string"
+          },
+          "entryat": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      },
+      "BatchDetails": {
+        "type": "object",
+        "properties": {
+          "batchid": {
+            "type": "string"
+          },
+          "entryat": {
+            "type": "string",
+            "format": "date"
+          },
+          "medicines": {
+            "type": "array",
+            "items": {
+              "properties": {
+                "medicineID": {
+                  "type": "string"
+                },
+                "expirationdate": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "medicineName": {
+                  "type": "string"
+                },
+                "brand": {
+                  "type": "string"
+                },
+                "price": {
+                  "type": "number"
+                },
+                "stock": {
+                  "type": "number"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "amount": {
+                  "type": "number"
+                },
+                "categories": {
+                  "type": "array",
+                  "items": {
+                    "properties": {
+                      "categoryID": {
+                        "type": "string"
+                      },
+                      "categoryName": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "Category": {
+        "type": "object",
+        "properties": {
+          "categoryID": {
+            "type": "string"
+          },
+          "categoryName": {
+            "type": "string"
+          },
+          "categoryDescription": {
+            "type": "string"
+          }
+        }
+      },
+      "CategoryDetails": {
+        "type": "object",
+        "properties": {
+          "categoryID": {
+            "type": "string"
+          },
+          "categoryName": {
+            "type": "string"
+          },
+          "categoryDescription": {
+            "type": "string"
+          },
+          "medicines": {
+            "type": "array",
+            "items": {
+              "properties": {
+                "medicineID": {
+                  "type": "string"
+                },
+                "medicineName": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
       "UserInput": {
         "type": "object",
         "properties": {
@@ -417,6 +2433,73 @@
             "type": "string"
           },
           "roleid": {
+            "type": "string"
+          }
+        }
+      },
+      "MedicineInput": {
+        "type": "object",
+        "properties": {
+          "medicinename": {
+            "type": "string"
+          },
+          "brand": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          },
+          "stock": {
+            "type": "number"
+          },
+          "unit": {
+            "type": "string"
+          },
+          "createdat": {
+            "type": "string",
+            "format": "date"
+          },
+          "updatedat": {
+            "type": "string",
+            "format": "date"
+          },
+          "expirationdate": {
+            "type": "string",
+            "format": "date"
+          },
+          "categories": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "RestockInput": {
+        "type": "object",
+        "properties": {
+          "medicineid": {
+            "type": "string"
+          },
+          "medicinename": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "number"
+          },
+          "expirationdate": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      },
+      "CategoryInput": {
+        "type": "object",
+        "properties": {
+          "categoryname": {
+            "type": "string"
+          },
+          "categorydescription": {
             "type": "string"
           }
         }

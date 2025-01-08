@@ -19,46 +19,5 @@ Backend ini adalah bagian dari sistem kasir apotek yang bertanggung jawab untuk 
 
 ---
 
-## Panduan Penggunaan
-
-### Endpoint Login
-
-#### URL: [https://back-end-kasir-apotek-js.vercel.app/](https://back-end-kasir-apotek-js.vercel.app/)
-```
-POST /auth/login
-```
-
-#### Header:
-```json
-{
-  "Content-Type": "application/json"
-}
-```
-
-#### Body:
-Kirimkan data JSON dengan struktur berikut:
-```json
-{
-  "email": "user@example.com",
-  "password": "yourpassword"
-}
-```
-
-#### Response Sukses:
-```json
-{
-  "message": "Login berhasil",
-  "token": "<JWT_TOKEN>",
-  "user": {
-    "fullName": "Nama Pengguna",
-    "roleID": "<ROLE_ID>"
-  }
-}
-```
-
-**Penjelasan Response:**
-- `message`: Informasi keberhasilan login
-- `token`: JWT token untuk autentikasi
-- `user`: Informasi pengguna, termasuk:
-  - `fullName`: Nama lengkap pengguna
-  - `roleID`: ID peran pengguna untuk navigasi berbasis peran di frontend
+## Dokumentasi
+Untuk panduan penggunaan dan dokumentasi lengkap, silakan kunjungi [Dokumentasi Backend](https://backend.tb-adbo-kel6.my.id/).
