@@ -768,6 +768,186 @@
           }
         },
         "x-access": "Admin, Warehouse Manager"
+      },
+      "patch": {
+        "summary": "Update a specific medicine by ID",
+        "tags": [
+          "Medicine"
+        ],
+        "description": "Update the details of a specific medicine by its ID. You can update the medicine name, brand, price, unit, and categories.",
+        "parameters": [
+          {
+            "name": "medicineid",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the medicine to update",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Data for updating the medicine",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "medicinename": {
+                    "type": "string",
+                    "description": "The name of the medicine"
+                  },
+                  "brand": {
+                    "type": "string",
+                    "description": "The brand of the medicine"
+                  },
+                  "price": {
+                    "type": "number",
+                    "description": "The price of the medicine"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "description": "The unit of the medicine"
+                  },
+                  "categories": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Array of category IDs associated with the medicine"
+                  }
+                }
+              },
+              "examples": {
+                "updateMedicine": {
+                  "summary": "Update medicine details",
+                  "value": {
+                    "medicinename": "Updated Paracetamol",
+                    "brand": "Updated Generic",
+                    "price": 6000,
+                    "unit": "tablet",
+                    "categories": ["CAT001", "CAT003"]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Medicine updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Medicine updated successfully"
+                    },
+                    "medicine": {
+                      "type": "object",
+                      "properties": {
+                        "medicineid": {
+                          "type": "string"
+                        },
+                        "medicinename": {
+                          "type": "string"
+                        },
+                        "brand": {
+                          "type": "string"
+                        },
+                        "price": {
+                          "type": "number"
+                        },
+                        "unit": {
+                          "type": "string"
+                        },
+                        "categories": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Category with ID not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Category with ID \"CAT003\" not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Medicine not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Medicine not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Service unavailable"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-access": "Admin, Warehouse Manager"
       }
     },
     "/medicine/batch": {
