@@ -1198,6 +1198,160 @@
           }
         },
         "x-access": "Admin, Warehouse Manager"
+      },
+      "patch": {
+        "summary": "Update a specific batch of a medicine",
+        "tags": ["Medicine"],
+        "description": "Update the details of a specific batch of a medicine by its batch ID.",
+        "parameters": [
+          {
+            "name": "batchid",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the batch to update",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Data for updating the batch",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "medicines": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "medicineid": {
+                          "type": "string",
+                          "description": "The ID of the medicine"
+                        },
+                        "amount": {
+                          "type": "number",
+                          "description": "The amount of the medicine"
+                        },
+                        "expirationdate": {
+                          "type": "string",
+                          "format": "date",
+                          "description": "The expiration date of the medicine"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "updateBatch": {
+                  "summary": "Update batch details",
+                  "value": {
+                    "medicines": [
+                      {
+                        "medicineid": "MED123",
+                        "amount": 50,
+                        "expirationdate": "2024-12-31"
+                      },
+                      {
+                        "medicineid": "MED124",
+                        "amount": 100,
+                        "expirationdate": "2025-01-31"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Batch updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "successes": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "successes": [
+                    "Medicine with ID \"MED123\" updated successfully",
+                    "Medicine with ID \"MED124\" updated successfully"
+                  ],
+                  "errors": []
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "successes": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "successes": [],
+                  "errors": [
+                    "Medicine ID is required",
+                    "Medicine with ID \"MED125\" not found in batch \"b1a2c3d4-e5f6-7890-abcd-ef1234567890\""
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/medicine/category": {
@@ -2376,6 +2530,275 @@
           }
         },
         "x-access": "Admin, Warehouse Manager"
+      }
+    },
+    "/transaction": {
+      "get": {
+        "summary": "Retrieve all transactions",
+        "tags": ["Transaction"],
+        "security": [{"BearerAuth": []}],
+        "responses": {
+          "200": {
+            "description": "Transactions retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"},
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "trid": {"type": "string"},
+                          "trdate": {"type": "string", "format": "date-time"},
+                          "total": {"type": "number"},
+                          "payment": {"type": "string"},
+                          "change": {"type": "number"},
+                          "amount_given": {"type": "number"},
+                          "buyername": {"type": "string"},
+                          "userid": {"type": "string"}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No transactions found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"}
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transaction/{trid}": {
+      "get": {
+        "summary": "Retrieve a transaction by ID",
+        "tags": ["Transaction"],
+        "parameters": [
+          {
+            "name": "trid",
+            "in": "path",
+            "required": true,
+            "schema": {"type": "string"}
+          }
+        ],
+        "security": [{"BearerAuth": []}],
+        "responses": {
+          "200": {
+            "description": "Transaction retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"},
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "trid": {"type": "string"},
+                        "trdate": {"type": "string", "format": "date-time"},
+                        "total": {"type": "number"},
+                        "payment": {"type": "string"},
+                        "change": {"type": "number"},
+                        "amount_given": {"type": "number"},
+                        "buyername": {"type": "string"},
+                        "userid": {"type": "string"},
+                        "medicines": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "medicineid": {"type": "string"},
+                              "batchid": {"type": "string"},
+                              "amount": {"type": "number"}
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Transaction not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"}
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transaction/create": {
+      "post": {
+        "summary": "Create a new transaction",
+        "tags": ["Transaction"],
+        "security": [{"BearerAuth": []}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "medicines": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "medicineid": {"type": "string"},
+                        "amount": {"type": "number"}
+                      }
+                    }
+                  },
+                  "payment": {"type": "string"},
+                  "buyername": {"type": "string"},
+                  "amount_given": {"type": "number"}
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Transaction created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"},
+                    "change": {"type": "number"},
+                    "total": {"type": "number"},
+                    "medicines": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "medicineid": {"type": "string"},
+                          "batchid": {"type": "string"},
+                          "message": {"type": "string"}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"},
+                    "errors": {
+                      "type": "array",
+                      "items": {"type": "string"}
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transaction/delete-all": {
+      "delete": {
+        "summary": "Delete all transactions",
+        "tags": ["Transaction"],
+        "security": [{"BearerAuth": []}],
+        "responses": {
+          "200": {
+            "description": "All transactions deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"}
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"}
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     }
   },
