@@ -3,7 +3,7 @@ const dotenv = require("dotenv");
 const sequelize = require("./src/config/database");
 const routes = require("./src/routes");
 const cors = require("cors");
-require("./src/models/medicines/associations"); // Memuat semua asosiasi
+require("./src/models/associations"); // Memuat semua asosiasi
 
 dotenv.config();
 

@@ -1,7 +1,7 @@
 const {
 	Categories,
 	MedicineCategory,
-} = require("../../models/medicines/associations");
+} = require("../../models/associations");
 
 exports.deleteCategory = async (req, res) => {
 	const { categoryid } = req.params;

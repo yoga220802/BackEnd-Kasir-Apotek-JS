@@ -1,4 +1,4 @@
-const { Categories } = require("../../models/medicines/associations");
+const { Categories } = require("../../models/associations");
 
 exports.addCategory = async (req, res) => {
 	const body = Array.isArray(req.body) ? req.body : [req.body];

@@ -2,7 +2,7 @@ const {
 	Categories,
 	MedicineData,
 	MedicineCategory,
-} = require("../../models/medicines/associations");
+} = require("../../models/associations");
 
 exports.getMedicineCategories = async (req, res) => {
 	try {

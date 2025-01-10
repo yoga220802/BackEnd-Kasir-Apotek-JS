@@ -1,4 +1,4 @@
-const { MedicineBatch } = require("../../models/medicines/associations");
+const { MedicineBatch } = require("../../models/associations");
 
 exports.updateMedicineBatch = async (req, res) => {
 	const { batchid } = req.params;

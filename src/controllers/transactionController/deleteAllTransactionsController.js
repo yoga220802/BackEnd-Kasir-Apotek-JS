@@ -1,4 +1,4 @@
-const { TransactionInfo, TransactionDetail } = require('../../models/transactions/associations');
+const { TransactionInfo, TransactionDetail } = require('../../models/associations');
 
 exports.deleteAllTransactions = async (req, res) => {
   try {

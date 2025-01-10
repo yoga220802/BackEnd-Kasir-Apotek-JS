@@ -1,7 +1,7 @@
 const {
 	MedicineData,
 	MedicineBatch,
-} = require("../../models/medicines/associations");
+} = require("../../models/associations");
 const { v4: uuidv4 } = require("uuid");
 
 exports.restockMedicine = async (req, res = null) => {

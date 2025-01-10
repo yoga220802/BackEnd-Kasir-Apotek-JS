@@ -1,4 +1,4 @@
-const { MedicineData } = require('../../models/medicines/associations');
+const { MedicineData } = require('../../models/associations');
 
 exports.softDeleteMedicine = async (req, res) => {
   const { medicineid } = req.params;
