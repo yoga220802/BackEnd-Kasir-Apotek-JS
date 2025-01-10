@@ -3,7 +3,7 @@ const {
 	MedicineBatch,
 	Categories,
 	MedicineCategory,
-} = require("../../models/medicines/associations");
+} = require("../../models/associations");
 const { formatMedicine } = require("../../helpers/medicineHelper");
 
 exports.getMedicines = async (req, res) => {

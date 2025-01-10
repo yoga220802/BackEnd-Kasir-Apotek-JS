@@ -2,7 +2,7 @@ const {
 	MedicineData,
 	MedicineCategory,
 	Categories,
-} = require("../../models/medicines/associations");
+} = require("../../models/associations");
 const sequelize = require("sequelize");
 
 exports.updateMedicine = async (req, res) => {

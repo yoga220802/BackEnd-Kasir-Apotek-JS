@@ -3,7 +3,7 @@ const {
 	MedicineData,
 	MedicineCategory,
 	Categories,
-} = require("../../models/medicines/associations");
+} = require("../../models/associations");
 const { v4: uuidv4 } = require("uuid");
 const sequelize = require("sequelize");
 

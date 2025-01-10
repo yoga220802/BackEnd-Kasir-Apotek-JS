@@ -1,4 +1,4 @@
-const { Categories } = require("../../models/medicines/associations");
+const { Categories } = require("../../models/associations");
 
 exports.updateCategoryDescription = async (req, res) => {
 	const { categoryid } = req.params;

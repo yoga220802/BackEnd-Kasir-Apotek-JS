@@ -3,7 +3,7 @@ const {
     TransactionDetail,
     MedicineBatch,
     MedicineData,
-} = require("../../models/transactions/associations");
+} = require("../../models/associations");
 const { v4: uuidv4 } = require("uuid");
 const { Op, fn, col, literal } = require("sequelize");
 const sequelize = require("../../config/database");
@@ -89,7 +89,7 @@ exports.createTransaction = async (req, res) => {
 
                 transactionDetails.push({
                     trid: transactionId,
-                    medicineid,
+                    medicineid: batch.medicineid,
                     batchid: batch.batchid,
                     amount: batchAmount,
                 });

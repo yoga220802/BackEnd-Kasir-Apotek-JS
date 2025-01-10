@@ -3,7 +3,7 @@ const {
 	MedicineData,
 	Categories,
 	MedicineCategory,
-} = require("../../models/medicines/associations");
+} = require("../../models/associations");
 const Sequelize = require("sequelize");
 
 exports.getMedicineBatches = async (req, res) => {
