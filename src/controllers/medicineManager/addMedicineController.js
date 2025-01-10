@@ -41,7 +41,13 @@ exports.addMedicine = async (req, res) => {
 				),
 			});
 			if (existingMedicine) {
-				errors.push(`Medicine with name "${medicinename}" already exists.`);
+				if (existingMedicine.is_deleted) {
+					existingMedicine.is_deleted = false;
+					await existingMedicine.save();
+					successes.push(`Medicine "${medicinename}" restored successfully.`);
+				} else {
+					errors.push(`Medicine with name "${medicinename}" already exists.`);
+				}
 				continue;
 			}
 			const newMedicine = await MedicineData.create({
