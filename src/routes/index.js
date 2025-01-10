@@ -6,6 +6,7 @@ const swaggerDocument = require('../docs/openAPI.json');
 const authRoutes = require('./authRoutes');
 const userRoutes = require('./userRoutes');
 const medicineRoutes = require('./medicineRoutes');
+const transactionRoutes = require('./transactionRoutes');
 const router = express.Router();
 
 // Test route
@@ -25,6 +26,9 @@ router.use('/user', userRoutes);
 
 // medicine manager routes
 router.use('/medicine', medicineRoutes);
+
+// transaction manager routes
+router.use('/transaction', transactionRoutes);
 
 // Export the combined routes
 module.exports = router;
