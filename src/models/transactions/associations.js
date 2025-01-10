@@ -19,15 +19,9 @@ TransactionDetail.belongsTo(TransactionInfo, {
 
 // Relasi antara TransactionDetail dan MedicineBatch
 TransactionDetail.belongsTo(MedicineBatch, {
-  foreignKey: "medicinebatchid",
+  foreignKey: "batchid",
   targetKey: "batchid",
   as: "Batch",
-});
-
-// Relasi antara TransactionDetail dan MedicineData
-TransactionDetail.belongsTo(MedicineData, {
-  foreignKey: "medicineid",
-  as: "Medicine",
 });
 
 // Relasi antara TransactionInfo dan User
@@ -39,4 +33,7 @@ TransactionInfo.belongsTo(User, {
 module.exports = {
   TransactionInfo,
   TransactionDetail,
+  MedicineBatch,
+  MedicineData,
+  User,
 };

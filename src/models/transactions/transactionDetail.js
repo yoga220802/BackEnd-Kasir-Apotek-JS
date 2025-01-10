@@ -15,7 +15,7 @@ TransactionDetail.init(
       allowNull: false,
       primaryKey: true,
     },
-    medicinebatchid: {
+    batchid: {
       type: DataTypes.UUID,
       allowNull: false,
       primaryKey: true,
