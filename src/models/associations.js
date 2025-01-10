@@ -5,6 +5,8 @@ const Categories = require("./medicines/categories");
 const TransactionInfo = require("./transactions/transactionInfo");
 const TransactionDetail = require("./transactions/transactionDetail");
 const User = require("./users/user");
+const dailySalesSummary = require("./reports/dailySalesSummary");
+const MedicineStockHistory = require("./reports/medicineStockHistory");
 
 // Hubungan antara MedicineData dan MedicineBatch
 MedicineData.hasMany(MedicineBatch, {
@@ -69,11 +71,23 @@ MedicineBatch.hasMany(TransactionDetail, {
   // constraints: false,
 });
 
-
 // Relasi antara TransactionInfo dan User
 TransactionInfo.belongsTo(User, {
   foreignKey: "userid",
   as: "User",
+});
+
+MedicineData.hasMany(MedicineStockHistory, {
+  foreignKey: 'medicineid',
+  onDelete: 'NO ACTION',
+  onUpdate: 'NO ACTION',
+  as: 'StockHistory',
+});
+MedicineStockHistory.belongsTo(MedicineData, {
+  foreignKey: 'medicineid',
+  onDelete: 'NO ACTION',
+  onUpdate: 'NO ACTION',
+  as: 'Medicine',
 });
 
 module.exports = {
@@ -84,4 +98,6 @@ module.exports = {
   TransactionInfo,
   TransactionDetail,
   User,
+  dailySalesSummary,
+  MedicineStockHistory,
 };

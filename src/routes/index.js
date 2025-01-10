@@ -7,6 +7,7 @@ const authRoutes = require('./authRoutes');
 const userRoutes = require('./userRoutes');
 const medicineRoutes = require('./medicineRoutes');
 const transactionRoutes = require('./transactionRoutes');
+const reportsRoutes = require('./reportsRoutes');
 const router = express.Router();
 
 // Test route
@@ -29,6 +30,9 @@ router.use('/medicine', medicineRoutes);
 
 // transaction manager routes
 router.use('/transaction', transactionRoutes);
+
+// report routes
+router.use('/report', reportsRoutes);
 
 // Export the combined routes
 module.exports = router;
