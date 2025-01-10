@@ -832,7 +832,10 @@
                     "brand": "Updated Generic",
                     "price": 6000,
                     "unit": "tablet",
-                    "categories": ["CAT001", "CAT003"]
+                    "categories": [
+                      "CAT001",
+                      "CAT003"
+                    ]
                   }
                 }
               }
@@ -1201,7 +1204,9 @@
       },
       "patch": {
         "summary": "Update a specific batch of a medicine",
-        "tags": ["Medicine"],
+        "tags": [
+          "Medicine"
+        ],
         "description": "Update the details of a specific batch of a medicine by its batch ID.",
         "parameters": [
           {
@@ -1840,7 +1845,10 @@
                     "stock": 100,
                     "unit": "tablet",
                     "expirationdate": "2024-12-31",
-                    "categories": ["CAT001", "CAT002"]
+                    "categories": [
+                      "CAT001",
+                      "CAT002"
+                    ]
                   }
                 },
                 "arrayOfObjects": {
@@ -1853,14 +1861,19 @@
                       "stock": 100,
                       "unit": "tablet",
                       "expirationdate": "2024-12-31",
-                      "categories": ["CAT001", "CAT002"]
+                      "categories": [
+                        "CAT001",
+                        "CAT002"
+                      ]
                     },
                     {
                       "medicinename": "Ibuprofen",
                       "brand": "Generic",
                       "price": 8000,
                       "unit": "tablet",
-                      "categories": ["CAT003"]
+                      "categories": [
+                        "CAT003"
+                      ]
                     }
                   ]
                 }
@@ -2535,8 +2548,14 @@
     "/transaction": {
       "get": {
         "summary": "Retrieve all transactions",
-        "tags": ["Transaction"],
-        "security": [{"BearerAuth": []}],
+        "tags": [
+          "Transaction"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "Transactions retrieved successfully",
@@ -2545,20 +2564,39 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "message": {"type": "string"},
+                    "message": {
+                      "type": "string"
+                    },
                     "data": {
                       "type": "array",
                       "items": {
                         "type": "object",
                         "properties": {
-                          "trid": {"type": "string"},
-                          "trdate": {"type": "string", "format": "date-time"},
-                          "total": {"type": "number"},
-                          "payment": {"type": "string"},
-                          "change": {"type": "number"},
-                          "amount_given": {"type": "number"},
-                          "buyername": {"type": "string"},
-                          "userid": {"type": "string"}
+                          "trid": {
+                            "type": "string"
+                          },
+                          "trdate": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "total": {
+                            "type": "number"
+                          },
+                          "payment": {
+                            "type": "string"
+                          },
+                          "change": {
+                            "type": "number"
+                          },
+                          "amount_given": {
+                            "type": "number"
+                          },
+                          "buyername": {
+                            "type": "string"
+                          },
+                          "userid": {
+                            "type": "string"
+                          }
                         }
                       }
                     }
@@ -2574,7 +2612,9 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "message": {"type": "string"}
+                    "message": {
+                      "type": "string"
+                    }
                   }
                 }
               }
@@ -2587,7 +2627,9 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "message": {"type": "string"}
+                    "message": {
+                      "type": "string"
+                    }
                   }
                 }
               }
@@ -2599,16 +2641,24 @@
     "/transaction/{trid}": {
       "get": {
         "summary": "Retrieve a transaction by ID",
-        "tags": ["Transaction"],
+        "tags": [
+          "Transaction"
+        ],
         "parameters": [
           {
             "name": "trid",
             "in": "path",
             "required": true,
-            "schema": {"type": "string"}
+            "schema": {
+              "type": "string"
+            }
           }
         ],
-        "security": [{"BearerAuth": []}],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "Transaction retrieved successfully",
@@ -2617,26 +2667,51 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "message": {"type": "string"},
+                    "message": {
+                      "type": "string"
+                    },
                     "data": {
                       "type": "object",
                       "properties": {
-                        "trid": {"type": "string"},
-                        "trdate": {"type": "string", "format": "date-time"},
-                        "total": {"type": "number"},
-                        "payment": {"type": "string"},
-                        "change": {"type": "number"},
-                        "amount_given": {"type": "number"},
-                        "buyername": {"type": "string"},
-                        "userid": {"type": "string"},
+                        "trid": {
+                          "type": "string"
+                        },
+                        "trdate": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "total": {
+                          "type": "number"
+                        },
+                        "payment": {
+                          "type": "string"
+                        },
+                        "change": {
+                          "type": "number"
+                        },
+                        "amount_given": {
+                          "type": "number"
+                        },
+                        "buyername": {
+                          "type": "string"
+                        },
+                        "userid": {
+                          "type": "string"
+                        },
                         "medicines": {
                           "type": "array",
                           "items": {
                             "type": "object",
                             "properties": {
-                              "medicineid": {"type": "string"},
-                              "batchid": {"type": "string"},
-                              "amount": {"type": "number"}
+                              "medicineid": {
+                                "type": "string"
+                              },
+                              "batchid": {
+                                "type": "string"
+                              },
+                              "amount": {
+                                "type": "number"
+                              }
                             }
                           }
                         }
@@ -2654,7 +2729,9 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "message": {"type": "string"}
+                    "message": {
+                      "type": "string"
+                    }
                   }
                 }
               }
@@ -2667,7 +2744,9 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "message": {"type": "string"}
+                    "message": {
+                      "type": "string"
+                    }
                   }
                 }
               }
@@ -2679,8 +2758,14 @@
     "/transaction/create": {
       "post": {
         "summary": "Create a new transaction",
-        "tags": ["Transaction"],
-        "security": [{"BearerAuth": []}],
+        "tags": [
+          "Transaction"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -2693,14 +2778,24 @@
                     "items": {
                       "type": "object",
                       "properties": {
-                        "medicineid": {"type": "string"},
-                        "amount": {"type": "number"}
+                        "medicineid": {
+                          "type": "string"
+                        },
+                        "amount": {
+                          "type": "number"
+                        }
                       }
                     }
                   },
-                  "payment": {"type": "string"},
-                  "buyername": {"type": "string"},
-                  "amount_given": {"type": "number"}
+                  "payment": {
+                    "type": "string"
+                  },
+                  "buyername": {
+                    "type": "string"
+                  },
+                  "amount_given": {
+                    "type": "number"
+                  }
                 }
               }
             }
@@ -2714,17 +2809,29 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "message": {"type": "string"},
-                    "change": {"type": "number"},
-                    "total": {"type": "number"},
+                    "message": {
+                      "type": "string"
+                    },
+                    "change": {
+                      "type": "number"
+                    },
+                    "total": {
+                      "type": "number"
+                    },
                     "medicines": {
                       "type": "array",
                       "items": {
                         "type": "object",
                         "properties": {
-                          "medicineid": {"type": "string"},
-                          "batchid": {"type": "string"},
-                          "message": {"type": "string"}
+                          "medicineid": {
+                            "type": "string"
+                          },
+                          "batchid": {
+                            "type": "string"
+                          },
+                          "message": {
+                            "type": "string"
+                          }
                         }
                       }
                     }
@@ -2740,10 +2847,14 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "message": {"type": "string"},
+                    "message": {
+                      "type": "string"
+                    },
                     "errors": {
                       "type": "array",
-                      "items": {"type": "string"}
+                      "items": {
+                        "type": "string"
+                      }
                     }
                   }
                 }
@@ -2757,7 +2868,9 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "message": {"type": "string"}
+                    "message": {
+                      "type": "string"
+                    }
                   }
                 }
               }
@@ -2768,18 +2881,142 @@
     },
     "/transaction/delete-all": {
       "delete": {
-        "summary": "Delete all transactions",
-        "tags": ["Transaction"],
-        "security": [{"BearerAuth": []}],
+        "summary": "Delete all transactions and related data",
+        "tags": [
+          "Transaction"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "responses": {
           "200": {
-            "description": "All transactions deleted successfully",
+            "description": "All transactions and related data deleted successfully",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "message": {"type": "string"}
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "All transactions and related data deleted successfully"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "Internal server error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/report/sales": {
+      "get": {
+        "summary": "Retrieve sales report",
+        "tags": [
+          "Report"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sales reports retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "summaryid": {
+                            "type": "integer"
+                          },
+                          "summarydate": {
+                            "type": "string",
+                            "format": "date"
+                          },
+                          "totalincome": {
+                            "type": "integer"
+                          },
+                          "totalmedicinessold": {
+                            "type": "integer"
+                          },
+                          "totaltransactions": {
+                            "type": "integer"
+                          },
+                          "topmedicine": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "totalcashpayments": {
+                            "type": "integer"
+                          },
+                          "totalqrispayments": {
+                            "type": "integer"
+                          },
+                          "cashpaymentcount": {
+                            "type": "integer"
+                          },
+                          "qristransactioncount": {
+                            "type": "integer"
+                          },
+                          "createdat": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "updatedat": {
+                            "type": "string",
+                            "format": "date-time"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No sales reports found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
                   }
                 }
               }
@@ -2792,7 +3029,237 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "message": {"type": "string"}
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/report/sales/export": {
+      "get": {
+        "summary": "Export sales report",
+        "tags": [
+          "Report"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "format",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "excel",
+                "csv"
+              ],
+              "default": "excel"
+            },
+            "description": "The format of the exported report"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sales report exported successfully",
+            "content": {
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": {},
+              "text/csv": {}
+            }
+          },
+          "404": {
+            "description": "No sales reports found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/report/stock": {
+      "get": {
+        "summary": "Retrieve stock report",
+        "tags": [
+          "Report"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Stock report retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "recordDate": {
+                            "type": "string",
+                            "format": "date"
+                          },
+                          "medicines": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "medicineid": {
+                                  "type": "string"
+                                },
+                                "stockin": {
+                                  "type": "integer"
+                                },
+                                "stockout": {
+                                  "type": "integer"
+                                },
+                                "remainingStock": {
+                                  "type": "integer"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No stock history found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/report/stock/export": {
+      "get": {
+        "summary": "Export stock report",
+        "tags": [
+          "Report"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "format",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "excel",
+                "csv"
+              ],
+              "default": "excel"
+            },
+            "description": "The format of the exported report"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Stock report exported successfully",
+            "content": {
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": {},
+              "text/csv": {}
+            }
+          },
+          "404": {
+            "description": "No stock history found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
                   }
                 }
               }
