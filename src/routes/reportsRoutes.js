@@ -4,9 +4,9 @@ const { getSalesReport, exportSalesReport } = require('../controllers/reports/ge
 const { getStockReport, exportStockReport } = require('../controllers/reports/getStockReportController');
 const router = express.Router();
 
-router.get('/sales', verifyToken, authorizeRole('ADM'), getSalesReport);
-router.get('/sales/export', verifyToken, authorizeRole('ADM'), exportSalesReport);
-router.get('/stock', verifyToken, authorizeRole('ADM'), getStockReport);
-router.get('/stock/export', verifyToken, authorizeRole('ADM'), exportStockReport);
+router.get('/sales', verifyToken, getSalesReport);
+router.get('/sales/export', verifyToken, exportSalesReport);
+router.get('/stock', verifyToken, getStockReport);
+router.get('/stock/export', verifyToken, authorizeRole('ADM', 'WRH'), exportStockReport);
 
 module.exports = router;
