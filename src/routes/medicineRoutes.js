@@ -15,17 +15,17 @@ const { softDeleteMedicine } = require('../controllers/medicineManager/softDelet
 const { verifyToken, authorizeRole } = require('../middlewares/authMiddleware');
 
 const router = express.Router();
-router.get('/', verifyToken, authorizeRole('WRH', 'ADM'), getMedicines);
-router.get('/batch', verifyToken, authorizeRole('WRH', 'ADM'), getMedicineBatches);
-router.get('/category', verifyToken, authorizeRole('WRH', 'ADM'), getMedicineCategories);
+router.get('/', verifyToken, authorizeRole('WRH', 'ADM', 'CSR'), getMedicines);
+router.get('/batch', verifyToken, authorizeRole('WRH', 'ADM', 'CSR'), getMedicineBatches);
+router.get('/category', verifyToken, authorizeRole('WRH', 'ADM', 'CSR'), getMedicineCategories);
 
 router.post('/add', verifyToken, authorizeRole('WRH', 'ADM'), addMedicine);
 router.post('/restock', verifyToken, authorizeRole('WRH', 'ADM'), restockMedicine);
 router.post('/category/add', verifyToken, authorizeRole('WRH', 'ADM'), addCategory);
 
-router.get('/category/:categoryid', verifyToken, authorizeRole('WRH', 'ADM'), getMedicinesByCategoryId);
-router.get('/batch/:batchid', verifyToken, authorizeRole('WRH', 'ADM'), getMedicineBatchById);
-router.get('/:medicineid', verifyToken, authorizeRole('WRH', 'ADM'), getMedicineById);
+router.get('/category/:categoryid', verifyToken, authorizeRole('WRH', 'ADM', 'CSR'), getMedicinesByCategoryId);
+router.get('/batch/:batchid', verifyToken, authorizeRole('WRH', 'ADM', 'CSR'), getMedicineBatchById);
+router.get('/:medicineid', verifyToken, authorizeRole('WRH', 'ADM', 'CSR'), getMedicineById);
 
 router.patch('/reset-stock/:medicineid', verifyToken, authorizeRole('WRH', 'ADM'), resetMedicineStock);
 router.patch('/reset-batch/:batchid/:medicineid', verifyToken, authorizeRole('WRH', 'ADM'), resetBatchAmount);
