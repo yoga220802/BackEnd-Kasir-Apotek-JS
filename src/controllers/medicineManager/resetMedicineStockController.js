@@ -1,4 +1,5 @@
-const { MedicineBatch } = require("../../models/associations");
+const { MedicineBatch, MedicineData } = require("../../models/associations");
+const { Op } = require("sequelize");
 
 exports.resetMedicineStock = async (req, res) => {
 	const { medicineid } = req.params;
@@ -17,32 +18,61 @@ exports.resetMedicineStock = async (req, res) => {
 		res.status(200).json({ message: "All batch amounts reset successfully" });
 	} catch (error) {
 		console.error("Error resetting batch amounts:", error);
-		if (error.name === 'SequelizeConnectionError') {
+		if (error.name === "SequelizeConnectionError") {
 			return res.status(503).json({ message: "Service unavailable" });
 		}
 		res.status(500).json({ message: "Internal server error" });
 	}
 };
 
-exports.resetBatchAmount = async (req, res) => {
-	const { batchid, medicineid } = req.params;
-
+exports.deleteExpiredMedicines = async (req, res) => {
 	try {
-		const batch = await MedicineBatch.findOne({ where: { batchid, medicineid } });
+		const now = new Date();
+		const tomorrow = new Date(now);
+		tomorrow.setDate(tomorrow.getDate() + 1);
+		const expiredBatches = await MedicineBatch.findAll({
+			where: {
+				expirationdate: {
+					[Op.lte]: tomorrow,
+				},
+			},
+			include: [
+				{
+					model: MedicineData,
+					as: "Medicine",
+					attributes: ["medicinename"],
+				},
+			],
+		});
 
-		if (!batch) {
-			return res
-				.status(404)
-				.json({ message: "Batch not found for the given medicine ID" });
+		if (expiredBatches.length === 0) {
+			return res.status(404).json({ message: "No expired medicines found" });
 		}
 
-		batch.amount = 0;
-		await batch.save();
+		const deletedMedicines = expiredBatches.map(
+			(batch) => batch.Medicine.medicinename
+		);
+		const deletedCount = expiredBatches.length;
 
-		res.status(200).json({ message: "Batch amount reset successfully" });
+		await MedicineBatch.update(
+			{ amount: 0 },
+			{
+				where: {
+					expirationdate: {
+						[Op.lt]: tomorrow,
+					},
+				},
+			}
+		);
+
+		res.status(200).json({
+			message: "Expired medicines deleted successfully",
+			deletedCount,
+			deletedMedicines,
+		});
 	} catch (error) {
-		console.error("Error resetting batch amount:", error);
-		if (error.name === 'SequelizeConnectionError') {
+		console.error("Error deleting expired medicines:", error);
+		if (error.name === "SequelizeConnectionError") {
 			return res.status(503).json({ message: "Service unavailable" });
 		}
 		res.status(500).json({ message: "Internal server error" });

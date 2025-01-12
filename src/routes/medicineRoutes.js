@@ -8,7 +8,7 @@ const { addCategory } = require('../controllers/medicineManager/addCategoryContr
 const { updateMedicine } = require('../controllers/medicineManager/editMedicineController');
 const { updateMedicineBatch } = require('../controllers/medicineManager/editMedicineBatchController');
 const { updateCategoryDescription } = require('../controllers/medicineManager/editCategoryController');
-const { resetMedicineStock, resetBatchAmount } = require('../controllers/medicineManager/resetMedicineStockController');
+const { resetMedicineStock, deleteExpiredMedicines } = require('../controllers/medicineManager/resetMedicineStockController');
 const { deleteCategory } = require('../controllers/medicineManager/deleteCategoryController');
 const { softDeleteMedicine } = require('../controllers/medicineManager/softDeleteMedicineController');
 
@@ -28,12 +28,11 @@ router.get('/batch/:batchid', verifyToken, authorizeRole('WRH', 'ADM', 'CSR'), g
 router.get('/:medicineid', verifyToken, authorizeRole('WRH', 'ADM', 'CSR'), getMedicineById);
 
 router.patch('/reset-stock/:medicineid', verifyToken, authorizeRole('WRH', 'ADM'), resetMedicineStock);
-router.patch('/reset-batch/:batchid/:medicineid', verifyToken, authorizeRole('WRH', 'ADM'), resetBatchAmount);
 router.patch('/:medicineid', verifyToken, authorizeRole('WRH', 'ADM'), updateMedicine);
 router.patch('/batch/:batchid', verifyToken, authorizeRole('WRH', 'ADM'), updateMedicineBatch);
 router.patch('/category/:categoryid', verifyToken, authorizeRole('WRH', 'ADM'), updateCategoryDescription);
 
 router.delete('/category/:categoryid', verifyToken, authorizeRole('WRH', 'ADM'), deleteCategory);
+router.delete('/expired-medicines', verifyToken, authorizeRole('WRH', 'ADM'), deleteExpiredMedicines);
 router.delete('/:medicineid', verifyToken, authorizeRole('WRH', 'ADM'), softDeleteMedicine);
-
 module.exports = router;

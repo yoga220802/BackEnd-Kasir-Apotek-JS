@@ -438,6 +438,10 @@
                             }
                           }
                         }
+                      },
+                      "warning": {
+                        "type": "string",
+                        "example": "Some medicines are expired. Please dispose of expired medicines immediately."
                       }
                     }
                   }
@@ -2271,33 +2275,13 @@
         "x-access": "Admin, Warehouse Manager"
       }
     },
-    "/medicine/reset-batch/{batchid}/{medicineid}": {
-      "patch": {
-        "summary": "Reset stock of a specific batch of a medicine",
+    "/medicine/expired-medicines": {
+      "delete": {
+        "summary": "Delete expired medicines",
         "tags": [
           "Medicine"
         ],
-        "description": "Medicine - Batch",
-        "parameters": [
-          {
-            "name": "batchid",
-            "in": "path",
-            "required": true,
-            "description": "The ID of the batch to reset stock",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "medicineid",
-            "in": "path",
-            "required": true,
-            "description": "The ID of the medicine to reset stock",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "description": "Delete all expired medicines from the inventory.",
         "security": [
           {
             "BearerAuth": []
@@ -2305,7 +2289,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Batch amount reset successfully",
+            "description": "Expired medicines deleted successfully",
             "content": {
               "application/json": {
                 "schema": {
@@ -2313,7 +2297,21 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "example": "Batch amount reset successfully"
+                      "example": "Expired medicines deleted successfully"
+                    },
+                    "deletedCount": {
+                      "type": "integer",
+                      "example": 5
+                    },
+                    "deletedMedicines": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "example": [
+                        "Paracetamol",
+                        "Ibuprofen"
+                      ]
                     }
                   }
                 }
@@ -2321,7 +2319,7 @@
             }
           },
           "404": {
-            "description": "Batch not found for the given medicine ID",
+            "description": "No expired medicines found",
             "content": {
               "application/json": {
                 "schema": {
@@ -2329,7 +2327,7 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "example": "Batch not found for the given medicine ID"
+                      "example": "No expired medicines found"
                     }
                   }
                 }
