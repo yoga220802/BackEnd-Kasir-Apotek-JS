@@ -2594,6 +2594,9 @@
                           },
                           "userid": {
                             "type": "string"
+                          },
+                          "cashier": {
+                            "type": "string"
                           }
                         }
                       }
@@ -2694,6 +2697,9 @@
                           "type": "string"
                         },
                         "userid": {
+                          "type": "string"
+                        },
+                        "cashier": {
                           "type": "string"
                         },
                         "medicines": {
@@ -2810,29 +2816,87 @@
                     "message": {
                       "type": "string"
                     },
-                    "change": {
-                      "type": "number"
-                    },
-                    "total": {
-                      "type": "number"
-                    },
-                    "medicines": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "medicineid": {
-                            "type": "string"
-                          },
-                          "batchid": {
-                            "type": "string"
-                          },
-                          "message": {
-                            "type": "string"
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "trid": {
+                          "type": "string"
+                        },
+                        "trdate": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "total": {
+                          "type": "number"
+                        },
+                        "payment": {
+                          "type": "string"
+                        },
+                        "change": {
+                          "type": "number"
+                        },
+                        "amount_given": {
+                          "type": "number"
+                        },
+                        "buyername": {
+                          "type": "string"
+                        },
+                        "userid": {
+                          "type": "string"
+                        },
+                        "cashier": {
+                          "type": "string"
+                        },
+                        "medicines": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "medicineid": {
+                                "type": "string"
+                              },
+                              "batchid": {
+                                "type": "string"
+                              },
+                              "amount": {
+                                "type": "number"
+                              },
+                              "message": {
+                                "type": "string"
+                              }
+                            }
                           }
                         }
                       }
                     }
+                  }
+                },
+                "example": {
+                  "message": "Transaction created successfully",
+                  "data": {
+                    "trid": "TR-20241224-1",
+                    "trdate": "2024-12-24T07:27:27.215Z",
+                    "total": 15000,
+                    "payment": "cash",
+                    "change": 5000,
+                    "amount_given": 20000,
+                    "buyername": "John Doe",
+                    "userid": "USR123",
+                    "cashier": "Jane Smith",
+                    "medicines": [
+                      {
+                        "medicineid": "MED123",
+                        "batchid": "b1a2c3d4-e5f6-7890-abcd-ef1234567890",
+                        "amount": 2,
+                        "message": "Medicine is safe to consume"
+                      },
+                      {
+                        "medicineid": "MED124",
+                        "batchid": "b2b2c3d4-e5f6-7890-abcd-ef1234567890",
+                        "amount": 1,
+                        "message": "Medicine will expire in 30 days"
+                      }
+                    ]
                   }
                 }
               }
