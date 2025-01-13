@@ -5,8 +5,8 @@ const { deleteAllTransactions } = require('../controllers/transactionController/
 const { getTransactionInfo, getTransactionById } = require('../controllers/transactionController/getTransactionController');
 const router = express.Router();
 
-router.get('/', verifyToken, authorizeRole('CSR'), getTransactionInfo);
-router.get('/:trid', verifyToken, authorizeRole('CSR'), getTransactionById);
+router.get('/', verifyToken, authorizeRole('CSR', 'ADM'), getTransactionInfo);
+router.get('/:trid', verifyToken, authorizeRole('CSR', 'ADM'), getTransactionById);
 router.post('/create', verifyToken, authorizeRole('CSR'), createTransaction);
 
 // harus dihapus ketika deploy ke server produksi
