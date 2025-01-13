@@ -3,6 +3,7 @@ const {
     TransactionDetail,
     MedicineBatch,
     MedicineData,
+    User,
 } = require("../../models/associations");
 const { v4: uuidv4 } = require("uuid");
 const { Op, fn, col, literal } = require("sequelize");
@@ -147,21 +148,48 @@ exports.createTransaction = async (req, res) => {
 
         await transaction.commit();
 
-        res.status(201).json({
-            message: "Transaction created successfully",
-            change,
-            total,
-            medicines: transactionDetails.map((detail) => ({
-                medicineid: detail.medicineid,
-                batchid: detail.batchid,
-                message:
-                    medicineWarnings.find(
-                        (warning) =>
-                            warning.medicineid === detail.medicineid &&
-                            warning.batchid === detail.batchid
-                    )?.message || "Medicine is safe to consume",
-            })),
+        const createdTransaction = await TransactionInfo.findOne({
+            where: { trid: transactionId },
+            attributes: ['trid', 'trdate', 'total', 'payment', 'change', 'amount_given', 'buyername', 'userid'],
+            include: [
+                {
+                    model: TransactionDetail,
+                    as: 'Details',
+                    attributes: ['medicineid', 'batchid', 'amount'],
+                },
+                {
+                    model: User,
+                    as: 'User',
+                    attributes: ['fullname'],
+                },
+            ],
         });
+
+        res.status(201).json({
+    message: "Transaction created successfully",
+    data: {
+        trid: createdTransaction.trid,
+        trdate: createdTransaction.trdate,
+        total: createdTransaction.total,
+        payment: createdTransaction.payment,
+        change: createdTransaction.change,
+        amount_given: createdTransaction.amount_given,
+        buyername: createdTransaction.buyername,
+        userid: createdTransaction.userid,
+        cashier: createdTransaction.User.fullname,
+        medicines: createdTransaction.Details.map(detail => ({
+            medicineid: detail.medicineid,
+            batchid: detail.batchid,
+            amount: detail.amount,
+            message:
+                medicineWarnings.find(
+                    (warning) =>
+                        warning.medicineid === detail.medicineid &&
+                        warning.batchid === detail.batchid
+                )?.message || "Medicine is safe to consume",
+        })),
+    },
+});
     } catch (error) {
         await transaction.rollback();
         console.error("Error creating transaction:", error.message || error);
